@@ -4,7 +4,8 @@
   "description": "a property and occupant surveying tool",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js",
+    "test": "mocha --exit"
   },
   "author": "",
   "license": "ISC",
