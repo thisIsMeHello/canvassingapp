@@ -5,7 +5,7 @@ const app = express();
 app.use(express.static('public'));
 
   if (require.main === module) {
-    app.listen(process.env.PORT || 8080, function () {
+    app.listen(process.env.PORT || 3000, function () {
       console.info(`App listening on ${this.address().port}`);
     });
   }
