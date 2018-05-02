@@ -3,21 +3,22 @@ let STORE = {
   streetNum: null,
 }
 
-let streets = [{
+let streets = [
+  {
     name: "Oxford Street",
-    from: 0,
+    from: 1,
     to: randomNumber(20, 200),
     id: 1
   },
   {
     name: "Regents Street",
-    from: 0,
+    from: 1,
     to: randomNumber(20, 200),
     id: 2
   },
   {
     name: "Newton Street",
-    from: 0,
+    from: 1,
     to: randomNumber(20, 200),
     id: 3
   }
@@ -27,6 +28,7 @@ function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+//how does this work?? It returns the object... Then  can use street.name
 function getStreetById(id) {
   let street = streets.find(street => {
     return street.id == id;
@@ -53,9 +55,9 @@ $(".js-login-button").on("click", event => {
     $(document).find(".js-main-section").removeClass("hidden");
     $(".js-login").addClass("hidden");
     console.log("login validated");
+  } else {
+    $(document).find("p.js-login-msg").html(`<p>Login details incorrect</p>`);
   }
-
-  console.log(inputUsername, inputPassword);
 })
 
 // takes array, returns new array of HTML template literals, appends to street list element
@@ -65,9 +67,11 @@ function renderStreetList() {
       <div class="section-container">
         <div class="street-edit-delete">
           <p>${street.name} ${street.from} to ${street.to}</p>
-          <button data-id="${street.id}" class="js-edit-button btn-edit-${street.id}">edit</button>
-          <button data-id="${street.id}" class="js-delete-button">delete</button>
-          <button data-id="${street.id}" class="js-canvass-button">canvass</button>
+          <div data-id="${street.id}" class="js-street-buttons">
+            <button data-id="${street.id}" class="js-edit-button btn-edit-${street.id}">edit</button>
+            <button data-id="${street.id}" class="js-delete-button">delete</button>
+            <button data-id="${street.id}" class="js-canvass-button">canvass</button>
+          <div>
         </div>
       </div>
     `
@@ -77,8 +81,8 @@ function renderStreetList() {
 
 
 
-//Takes street form input, adds to street list
-function handleStreetSubmit() {
+//Takes street form input, adds to street list. re-render list
+function  addStreetToList() {
   $('.js-street-input').submit(event => {
     event.preventDefault();
     let street = $('.js-street').val();
@@ -106,7 +110,7 @@ function renderEditForm(street) {
       <label for="highNumEdit">to</label>
       <input value="${street.to}" class="input js-highNumEdit" id="highNumEdit" name="highNumEdit" type="number" placeholder="100">
       <p style="display: none; color: red" class="login-error">Please enter a number</p>
-      <button class="button js-save-button" type="submit">Save</button>
+      <button data-id="${street.id}" class="button js-save-button" type="submit">Save</button>
       <button class="button js-cancel-button" type="submit">Cancel</button>
     </form>
   </div>
@@ -116,13 +120,11 @@ function renderEditForm(street) {
 
 function editButton() {
   $(document).on("click", ".js-edit-button", (event) => {
-    const id = $(event.target).data("id")
-    const street = getStreetById(id);
+    let id = $(event.target).data("id")
+    let street = getStreetById(id);
     let renderFormHTML = renderEditForm(street);
+    $(event.target).closest(".js-street-buttons").addClass("hidden");
     $(event.target).parent().after(renderFormHTML);
-    $(event.target).prop("disabled", true);
-    console.log($(event.target).parent());
-    // $(event.currentTarget).closest(".section-container").find('.edit-section').removeClass('hidden');
   });
 }
 
@@ -144,54 +146,65 @@ function cancelButton() {
     event.preventDefault();
     const $sectionContainer = $(event.currentTarget).closest(".section-container");
     $sectionContainer.find(".edit-section").addClass('hidden');
+    $sectionContainer.find(".js-street-buttons").removeClass("hidden");
     $sectionContainer.find('input[name=street-edit]').val("");
     $sectionContainer.find('input[name=lowNumEdit]').val("");
     $sectionContainer.find('input[name=highNumEdit]').val("");
-    $sectionContainer.find(".js-edit-button").prop("disabled", false);
+    $(event.target).closest(".js-street-buttons").removeClass("hidden");
+    // $sectionContainer.find(".js-edit-button").prop("disabled", false);
     console.log($(event.currentTarget).prev());
   })
 }
 
 function saveButton() {
-  $(document).on("click", ".js-save-button", (event) => {
+  $(document).on("click", ".js-save-button",(event) => {
     event.preventDefault();
+    const id2 = $(event.target).data("id");
+    const street2 = getStreetById(id2);
 
-    let streetField = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
-    let fromField = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
-    let toField = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
+    // let streetField = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
+    // let fromField = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
+    // let toField = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
+    //
+    // let street;
+    // let from;
+    // let to;
+    //
+    // if (streetField === "") {
+    //   street = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
+    // } else {
+    //   street = streetField;
+    // }
+    //
+    // if (fromField === "") {
+    //   from = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
+    // } else {
+    //   from = fromField;
+    // }
+    //
+    // if (toField === "") {
+    //   to = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
+    // } else {
+    //   to = toField;
+    // }
 
-    let street;
-    let from;
-    let to;
+    let street = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
+    let from = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
+    let to = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
 
-    if (streetField === "") {
-      street = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
-    } else {
-      street = streetField;
-    }
-
-    if (fromField === "") {
-      from = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
-    } else {
-      from = fromField;
-    }
-
-    if (toField === "") {
-      to = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
-    } else {
-      to = toField;
-    }
 
     $(event.currentTarget).closest(".section-container").find(".street-edit-delete").html(`
       <p>${street} ${from} to ${to}</p>
-      <button class="js-edit-button">edit</button>
-      <button data-id="${street.id}" class="js-delete-button">delete</button>
+      <div data-id="${street2.id}" class="js-street-buttons">
+        <button data-id="${street2.id}" class="js-edit-button">edit</button>
+        <button data-id="${street2.id}" class="js-delete-button">delete</button>
+        <button data-id="${street2.id}" class="js-canvass-button">canvass</button>
+      </div>
       `);
-    $(event.currentTarget).closest(".section-container").find(".edit-section").addClass('hidden');
-    $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val("");
-    $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val("");
-    $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val("");
-    console.log(street, from, to);
+    // $(event.currentTarget).closest(".section-container").find(".edit-section").addClass('hidden');
+    // $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val("");
+    // $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val("");
+    // $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val("");
   })
 }
 
@@ -243,7 +256,7 @@ function submitSurvey() {
 
 function setUpApp() {
   renderStreetList();
-  handleStreetSubmit();
+  addStreetToList();
   editButton();
   deleteButton();
   cancelButton();
