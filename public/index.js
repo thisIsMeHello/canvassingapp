@@ -193,14 +193,17 @@ function saveButton() {
     let to = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
 
 
-    $(event.currentTarget).closest(".section-container").find(".street-edit-delete").html(`
-      <p>${street} ${from} to ${to}</p>
-      <div data-id="${street2.id}" class="js-street-buttons">
-        <button data-id="${street2.id}" class="js-edit-button">edit</button>
-        <button data-id="${street2.id}" class="js-delete-button">delete</button>
-        <button data-id="${street2.id}" class="js-canvass-button">canvass</button>
-      </div>
-      `);
+    // $(event.currentTarget).closest(".section-container").find(".street-edit-delete").html(`
+    //   <p>${street} ${from} to ${to}</p>
+    //   <div data-id="${street2.id}" class="js-street-buttons">
+    //     <button data-id="${street2.id}" class="js-edit-button">edit</button>
+    //     <button data-id="${street2.id}" class="js-delete-button">delete</button>
+    //     <button data-id="${street2.id}" class="js-canvass-button">canvass</button>
+    //   </div>
+    //   `);
+
+    streets.splice((id2-1), 1, {name: street, from: from, to: to, id:id2});
+    renderStreetList();
     // $(event.currentTarget).closest(".section-container").find(".edit-section").addClass('hidden');
     // $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val("");
     // $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val("");
