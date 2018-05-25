@@ -96,8 +96,13 @@ function  addStreetToList() {
     }
     streets.unshift(newStreetObject);
     renderStreetList();
+    $(event.target).find(".js-street").val("");
+    $(event.target).find(".js-houseNumberLow").val("");
+    $(event.target).find(".js-houseNumberHigh").val("");
+
   })
 }
+
 
 function renderEditForm(street) {
   let formHTML = `
@@ -162,52 +167,18 @@ function saveButton() {
     const id2 = $(event.target).data("id");
     const street2 = getStreetById(id2);
 
-    // let streetField = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
-    // let fromField = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
-    // let toField = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
-    //
-    // let street;
-    // let from;
-    // let to;
-    //
-    // if (streetField === "") {
-    //   street = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
-    // } else {
-    //   street = streetField;
-    // }
-    //
-    // if (fromField === "") {
-    //   from = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
-    // } else {
-    //   from = fromField;
-    // }
-    //
-    // if (toField === "") {
-    //   to = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
-    // } else {
-    //   to = toField;
-    // }
-
     let street = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
     let from = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
     let to = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
 
-
-    // $(event.currentTarget).closest(".section-container").find(".street-edit-delete").html(`
-    //   <p>${street} ${from} to ${to}</p>
-    //   <div data-id="${street2.id}" class="js-street-buttons">
-    //     <button data-id="${street2.id}" class="js-edit-button">edit</button>
-    //     <button data-id="${street2.id}" class="js-delete-button">delete</button>
-    //     <button data-id="${street2.id}" class="js-canvass-button">canvass</button>
-    //   </div>
-    //   `);
-
     streets.splice((id2-1), 1, {name: street, from: from, to: to, id:id2});
+
     renderStreetList();
-    // $(event.currentTarget).closest(".section-container").find(".edit-section").addClass('hidden');
-    // $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val("");
-    // $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val("");
-    // $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val("");
+
+    $(event.currentTarget).closest(".section-container").find(".edit-section").addClass('hidden');
+    $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val("");
+    $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val("");
+    $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val("");
   })
 }
 
@@ -253,10 +224,6 @@ function submitSurvey() {
   })
 }
 
-
-
-
-
 function setUpApp() {
   renderStreetList();
   addStreetToList();
@@ -267,6 +234,7 @@ function setUpApp() {
   canvassButton();
   surveyButton();
   submitSurvey();
+  // signUpForm();
 }
 
 $(setUpApp);
