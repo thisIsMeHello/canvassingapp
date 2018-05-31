@@ -24,6 +24,8 @@ let streets = [
   }
 ]
 
+let people = [];
+
 function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
@@ -150,9 +152,7 @@ function cancelButton() {
     $sectionContainer.find('input[name=street-edit]').val("");
     $sectionContainer.find('input[name=lowNumEdit]').val("");
     $sectionContainer.find('input[name=highNumEdit]').val("");
-    $(event.target).closest(".js-street-buttons").removeClass("hidden");
-    // $sectionContainer.find(".js-edit-button").prop("disabled", false);
-    console.log($(event.currentTarget).prev());
+    // $(event.target).closest(".js-street-buttons").removeClass("hidden");
   })
 }
 
@@ -161,53 +161,14 @@ function saveButton() {
     event.preventDefault();
     const id2 = $(event.target).data("id");
     const street2 = getStreetById(id2);
-
-    // let streetField = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
-    // let fromField = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
-    // let toField = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
-    //
-    // let street;
-    // let from;
-    // let to;
-    //
-    // if (streetField === "") {
-    //   street = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
-    // } else {
-    //   street = streetField;
-    // }
-    //
-    // if (fromField === "") {
-    //   from = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
-    // } else {
-    //   from = fromField;
-    // }
-    //
-    // if (toField === "") {
-    //   to = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
-    // } else {
-    //   to = toField;
-    // }
+    console.log("save button clicked");
 
     let street = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
     let from = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
     let to = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
 
-
-    // $(event.currentTarget).closest(".section-container").find(".street-edit-delete").html(`
-    //   <p>${street} ${from} to ${to}</p>
-    //   <div data-id="${street2.id}" class="js-street-buttons">
-    //     <button data-id="${street2.id}" class="js-edit-button">edit</button>
-    //     <button data-id="${street2.id}" class="js-delete-button">delete</button>
-    //     <button data-id="${street2.id}" class="js-canvass-button">canvass</button>
-    //   </div>
-    //   `);
-
     streets.splice((id2-1), 1, {name: street, from: from, to: to, id:id2});
     renderStreetList();
-    // $(event.currentTarget).closest(".section-container").find(".edit-section").addClass('hidden');
-    // $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val("");
-    // $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val("");
-    // $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val("");
   })
 }
 
@@ -219,37 +180,40 @@ function canvassButton() {
         <div>
         <label>choose house number</label>
         <input type='number'>
-        <button class="js-survey-button">start survey</button>
+        <button class="js-start-survey-button">start survey</button>
         </div>`);
   })
 }
 
 function renderSurvey(event) {
   const surveyHTML = `
+
     <form role="form" action="#" method="post" class="js-survey-form">
-      <label>Name</label>
-      <input name="name" type="text">
-      <input type="submit">
+      <label for="survey-first-name-field">First Name</label>
+      <input id="survey-first-name-field" type="text">
+      <label for="survey-surname-field">Surname</label>
+      <input id="survey-surname-field" type="text">
+      <button class="js-save-survey">Save</button>
     </form>
   `
   $(event.target).after(surveyHTML);
 }
 
-function surveyButton() {
-  $(document).on("click", ".js-survey-button", (event) => {
+function startSurveyButton() {
+  $(document).on("click", ".js-start-survey-button", (event) => {
     event.preventDefault();
     STORE.streetNum = $(event.target).prev().val();
-    console.log("survey clicked", STORE.streetNum);
+    console.log("start survey clicked", STORE.streetNum);
     renderSurvey(event);
   })
 }
 
-function submitSurvey() {
+function submitSurveyButton() {
   $(document).on("submit", ".js-survey-form", (event) => {
     event.preventDefault();
-    let name = event.target.name.value
-    window.test = event;
     console.log("submit clicked", name);
+    let name = event.target.name.value
+
   })
 }
 
@@ -265,8 +229,8 @@ function setUpApp() {
   cancelButton();
   saveButton();
   canvassButton();
-  surveyButton();
-  submitSurvey();
+  startSurveyButton();
+  submitSurveyButton();
 }
 
 $(setUpApp);
