@@ -6,7 +6,7 @@ const residentSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   surname: { type: String, required: true },
   votingIntention: String,
-  // property: { type: mongoose.Schema.Types.OjectId, ref: 'Property' }
+  property: { type: mongoose.Schema.Types.ObjectId, ref: 'Property' }
 });
 
 //If set timestamps, mongoose assigns createdAt and updatedAt fields to your schema, the type assigned is Date.

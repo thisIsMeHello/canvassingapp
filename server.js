@@ -74,3 +74,5 @@ if (require.main === module) {
 }
 
 module.exports = { runServer, app, closeServer };
+
+// module.exports = app;

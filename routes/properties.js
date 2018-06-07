@@ -27,7 +27,7 @@ router.post("/", (req, res, next) => {
     err.status = 422;
     return next(err);
   }
-  const {propertyNum, apartment, street } = req.body;
+  const { propertyNum, apartment, street } = req.body;
 
   Property
     .create({
@@ -41,7 +41,7 @@ router.post("/", (req, res, next) => {
       console.error(err);
       res.status(500).json({ error: 'Something went wrong' });
     });
-})
+});
 
 router.get('/:id', (req, res) => {
   Property

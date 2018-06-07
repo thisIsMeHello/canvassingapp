@@ -42,7 +42,7 @@ router.post("/", (req, res, next) => {
       console.error(err);
       res.status(500).json({ error: 'Something went wrong' });
     });
-})
+});
 
 router.get('/:id', (req, res) => {
   Street
