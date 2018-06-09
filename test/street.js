@@ -25,13 +25,13 @@ function seedStreetData() {
 
 function generateStreetData() {
   return {
-    streetName: "Marcus Street",
-    postCode: "SE22 8TH",
+    "streetName": "Marcus Street",
+    "postCode": "SE22 8TH",
 
     // streetName: faker.address.streetName(),
     // postCode: faker.address.zipCode(),
-    numRangeStart: 1,
-    numRangeEnd: 200
+    "numRangeStart": 1,
+    "numRangeEnd": 200,
     // numRangeEnd: randomNumber(50, 200)
   }
 }
@@ -74,7 +74,7 @@ describe('canvassing-app api endpoints', function () {
           // so subsequent .then blocks can access response object
           res = _res;
           expect(res).to.have.status(200);
-          // otherwise our db seeding didn't work
+          // otherwise our db seeding didn't` work
           expect(res.body.streets).to.have.length.of.at.least(1);
           return Street.count();
         })
@@ -153,23 +153,23 @@ describe('canvassing-app api endpoints', function () {
 
   describe('DELETE endpoint', function() {
 
-    it('delete a street by id', function() {
+    it('should delete a street by id', function() {
 
-      let street;
+      let id;
 
       return Street
         .findOne()
-        .then(function(foundStreet) {
-          street = foundStreet;
-          return chai.request(app).delete(`/api/streets/${street.id}`);
+        .then(function(street) {
+          id = street._id;
+          return chai.request(app).delete(`/api/streets/${street._id}`);
         })
         .then(function(res) {
-          expect(res).to.have.status(204);
-          return Street.findById(street.id);
+          expect(res).to.have.status(200);
+          return Street.findById(id);
         })
-        // .then(function(_Street) {
-        //   expect(_Street).to.be.null;
-        // });
+        .then(function(street) {
+          expect(street).to.be.null;
+        });
     });
   });
 
