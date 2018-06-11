@@ -1,4 +1,3 @@
-
 'use strict';
 
 const chai = require('chai');
@@ -27,12 +26,8 @@ function generateStreetData() {
   return {
     "streetName": "Marcus Street",
     "postCode": "SE22 8TH",
-
-    // streetName: faker.address.streetName(),
-    // postCode: faker.address.zipCode(),
     "numRangeStart": 1,
     "numRangeEnd": 200,
-    // numRangeEnd: randomNumber(50, 200)
   }
 }
 
@@ -40,11 +35,6 @@ function tearDownDb() {
   console.warn('Deleting database');
   return mongoose.connection.dropDatabase();
 }
-
-// function randomNumber(min, max) {
-//   return Math.floor(Math.random() * (max - min + 1) + min)
-// }
-
 
 describe('canvassing-app api endpoints', function () {
 
@@ -71,10 +61,8 @@ describe('canvassing-app api endpoints', function () {
       return chai.request(app)
         .get('/api/streets')
         .then(function(_res) {
-          // so subsequent .then blocks can access response object
           res = _res;
           expect(res).to.have.status(200);
-          // otherwise our db seeding didn't` work
           expect(res.body.streets).to.have.length.of.at.least(1);
           return Street.count();
         })
@@ -110,12 +98,6 @@ describe('canvassing-app api endpoints', function () {
           resStreet = _res.body;
           return Street.findById(resStreet.id);
         })
-        // .then(function(post) {
-        //   expect(resStreet.streetName).to.contain(newStreet.streetName);
-        //   expect(resStreet.postCode).to.equal(newStreet.postCode);
-        //   expect(resStreet.numRangeStart).to.equal(newStreet.numRangeStart);
-        //   expect(resStreet.numRangeEnd).to.equal(newStreet.numRangeEnd);
-        // });
       });
     });
   });
@@ -132,9 +114,6 @@ describe('canvassing-app api endpoints', function () {
         .findOne()
         .then(function(Street) {
           updateData.id = Street.id;
-
-          // make request then inspect it to make sure it reflects
-          // data we sent
           return chai.request(app)
             .put(`/api/streets/${Street.id}`)
             .send(updateData);

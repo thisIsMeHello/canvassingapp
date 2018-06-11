@@ -7,9 +7,9 @@ const router = express.Router();
 router.get('/', (req, res) => {
   Property
     .find()
-    .then(Propertys => {
+    .then(properties => {
       res.json({
-        Propertys
+        properties
       });
     })
     .catch(err => {
