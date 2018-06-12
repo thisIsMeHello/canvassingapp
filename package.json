@@ -8,6 +8,7 @@
     "test": "NODE_ENV=test mocha --exit",
     "test-street": "mocha test/street.js",
     "test-property": "mocha test/property.js",
+    "test-resident": "mocha test/resident.js",
     "dev": "nodemon server.js"
   },
   "author": "",

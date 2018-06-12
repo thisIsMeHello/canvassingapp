@@ -61,7 +61,7 @@ router.delete('/:id', (req, res) => {
   Property
     .findByIdAndRemove(req.params.id)
     .then(() => {
-      res.status(200).json({ message: 'success' });
+      res.status(204).end();
     })
     .catch(err => {
       console.error(err);
@@ -70,14 +70,14 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+  if (!(req.params.id && req.body._id && req.params.id === req.body._id)) {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
     });
   }
 
   const updated = {};
-  const updateableFields = ['propertyNum', 'apartment', 'street'];
+  const updateableFields = ['propertyNum', 'apartment'];
   updateableFields.forEach(field => {
     if (field in req.body) {
       updated[field] = req.body[field];
