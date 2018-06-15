@@ -1,3 +1,5 @@
+'use strict';
+
 let STORE = {
   streetID: null,
   streetNum: null,
@@ -30,7 +32,6 @@ function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-//how does this work?? It returns the object... Then  can use street.name
 function getStreetById(id) {
   let street = streets.find(street => {
     return street.id == id;
@@ -81,8 +82,6 @@ function renderStreetList() {
   $('.js-street-list').html(listHTML);
 }
 
-
-
 //Takes street form input, adds to street list. re-render list
 function  addStreetToList() {
   $('.js-street-input').submit(event => {
@@ -120,7 +119,7 @@ function renderEditForm(street) {
   return formHTML;
 }
 
-function editButton() {
+function streetEditButton() {
   $(document).on("click", ".js-edit-button", (event) => {
     let id = $(event.target).data("id")
     let street = getStreetById(id);
@@ -130,7 +129,7 @@ function editButton() {
   });
 }
 
-function deleteButton() {
+function streetDeleteButton() {
   $(document).on("click", ".js-delete-button", function() {
     let id = $(this).data("id");
     //gets id of street clicked, returns everything in the list that doesn't have that id
@@ -143,7 +142,7 @@ function deleteButton() {
   })
 }
 
-function cancelButton() {
+function streetEditCancelButton() {
   $(document).on("click", ".js-cancel-button", (event) => {
     event.preventDefault();
     const $sectionContainer = $(event.currentTarget).closest(".section-container");
@@ -156,7 +155,7 @@ function cancelButton() {
   })
 }
 
-function saveButton() {
+function streetEditSaveButton() {
   $(document).on("click", ".js-save-button",(event) => {
     event.preventDefault();
     const id2 = $(event.target).data("id");
@@ -172,7 +171,7 @@ function saveButton() {
   })
 }
 
-function canvassButton() {
+function streetCanvassButton() {
   $(document).on("click", ".js-canvass-button", (event) => {
     event.preventDefault();
     STORE.streetID = $(event.target).data("id")
@@ -185,20 +184,6 @@ function canvassButton() {
   })
 }
 
-function renderSurvey(event) {
-  const surveyHTML = `
-
-    <form role="form" action="#" method="post" class="js-survey-form">
-      <label for="survey-first-name-field">First Name</label>
-      <input id="survey-first-name-field" type="text">
-      <label for="survey-surname-field">Surname</label>
-      <input id="survey-surname-field" type="text">
-      <button class="js-save-survey">Save</button>
-    </form>
-  `
-  $(event.target).after(surveyHTML);
-}
-
 function startSurveyButton() {
   $(document).on("click", ".js-start-survey-button", (event) => {
     event.preventDefault();
@@ -207,6 +192,25 @@ function startSurveyButton() {
     renderSurvey(event);
   })
 }
+
+function renderSurvey(event) {
+  const surveyHTML = `
+
+    <form role="form" action="#" method="post" class="js-survey-form">
+      <label for="survey-first-name">First Name</label>
+      <input id="survey-first-name" type="text">
+      <label for="survey-surname">Surname</label>
+      <input id="survey-surname" type="text">
+      <label for="survey-voting-intention">Voting Intention</label>
+      <input id="surney-voting-intention" type="text">
+      <button class="js-save-survey">Save</button>
+      <button class="js-save-survey">Cancel</button>
+    </form>
+  `
+  $(event.target).after(surveyHTML);
+}
+
+
 
 function submitSurveyButton() {
   $(document).on("submit", ".js-survey-form", (event) => {
@@ -224,11 +228,11 @@ function submitSurveyButton() {
 function setUpApp() {
   renderStreetList();
   addStreetToList();
-  editButton();
-  deleteButton();
-  cancelButton();
-  saveButton();
-  canvassButton();
+  streetEditButton();
+  streetDeleteButton();
+  streetEditCancelButton();
+  streetEditSaveButton();
+  streetCanvassButton();
   startSurveyButton();
   submitSurveyButton();
 }
