@@ -65,7 +65,7 @@ $(".js-login-button").on("click", event => {
 
 // takes array, returns new array of HTML template literals, appends to street list element
 function renderStreetList() {
-  listHTML = streets.map(street => {
+  const listHTML = streets.map(street => {
     return `
       <div class="section-container">
         <div class="street-edit-delete">
