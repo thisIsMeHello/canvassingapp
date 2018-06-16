@@ -5,3 +5,12 @@
 input {
   margin: 5px;
 }
+
+button {
+  margin: 5px;
+}
+
+section {
+  margin: 20px;
+  border: 1px solid black;
+}

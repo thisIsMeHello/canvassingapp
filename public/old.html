@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <section class="login js-login">
+    <h1>Find My Peoples and Start the Revolution!</h1>
+    <p>This is a political canvassing app that allows you to update property details (single/multi occupancy) and log voter intention</p>
+          <form role="form" action="#" method="post" class="js-login">
+            <label for="userName">Username</label>
+            <input class="input js-userName" id="userName" name="userName" type="text" placeholder="eg. Boris Johnson..." required>
+            <label for="password">Password</label>
+            <input class="input js-password" id="password" name="password" type="text" placeholder="eg. not password123" required>
+            <p style="display: none; color: red" class="login-error">Username and Password not found</p>
+            <button class="button js-login-button" type="submit">Login</button>
+            <p class="js-login-msg"></p>
+            <p>For testing - username "test" password "password"</p>
+          </form>
+  </section>
+
+  <section class="js-main-section">
+    <div>
+      <h1>Street List</h1>
+      <h2>Add a street to the list</h2>
+      <form role="form" action="#" method="post" class="js-street-input">
+        <label for="street">Enter Street</label>
+        <input class="input js-street" id="street" name="street" type="text" placeholder="eg. Oxford Street..." required>
+        <label for="houseNumberRange">Enter property number range</label>
+        <input class="input js-houseNumberLow" id="houseNumberRange" name="houseNumberRange" type="number" placeholder="0" required>
+        <label for="houseNumberRange">to</label>
+        <input class="input js-houseNumberHigh" id="houseNumberRange" name="houseNumberRange" type="number" placeholder="100" required>
+        <p style="display: none; color: red" class="login-error">Please enter a number</p>
+        <button class="button" type="submit">Add to list</button>
+      </form>
+    </div>
+
+    <div class="js-street-section">
+      <h2>Edit the list</h2>
+      <div class=js-street-list></div>
+    </div>
+  </section>
+
+  <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous">
+  </script>
+  <script src="index.js"></script>
+
+</body>
+</html>

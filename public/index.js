@@ -6,27 +6,27 @@ let STORE = {
 }
 
 let streets = [
-  {
-    name: "Oxford Street",
-    from: 1,
-    to: randomNumber(20, 200),
-    id: 1
-  },
-  {
-    name: "Regents Street",
-    from: 1,
-    to: randomNumber(20, 200),
-    id: 2
-  },
-  {
-    name: "Newton Street",
-    from: 1,
-    to: randomNumber(20, 200),
-    id: 3
-  }
+  // {
+  //   name: "Oxford Street",
+  //   from: 1,
+  //   to: randomNumber(20, 200),
+  //   id: 1
+  // },
+  // {
+  //   name: "Regents Street",
+  //   from: 1,
+  //   to: randomNumber(20, 200),
+  //   id: 2
+  // },
+  // {
+  //   name: "Newton Street",
+  //   from: 1,
+  //   to: randomNumber(20, 200),
+  //   id: 3
+  // }
 ]
 
-let people = [];
+let users = [];
 
 function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
@@ -49,18 +49,56 @@ function validate(user, pass) {
   }
 }
 
-$(".js-login-button").on("click", event => {
+function splashLoginButton(){
+  $(document).on("click", ".js-splash-login-button", function() {
+    console.log("splash login button clicked");
+    $(document).find(".js-login-section").removeClass("hidden");
+    $(document).find(".js-splash-section").addClass("hidden");
+  })
+}
+
+function splashRegisterButton(){
+  $(document).on("click", ".js-splash-register-button", function() {
+    console.log("splash register button clicked");
+    $(document).find(".js-register-section").removeClass("hidden");
+    $(document).find(".js-splash-section").addClass("hidden");
+  })
+}
+
+// function loginSubmitButton(){
+//   $(document).on("click", ".js-login-page-submit-button", function() {
+//     console.log("login page login button clicked");
+//     $(document).find(".js-login-section").addClass("hidden");
+//     $(document).find(".js-street-section").removeClass("hidden");
+//   })
+// }
+
+
+// $(".js-splash-login-button").on("click", event => {
+//   console.log("splash login clicked");
+// })
+
+$(".js-login-page-submit-button").on("click", event => {
+  console.log("login button clicked");
   event.preventDefault();
   let inputUsername = $(".js-userName").val();
   let inputPassword = $(".js-password").val();
 
   if (validate(inputUsername, inputPassword)) {
-    $(document).find(".js-main-section").removeClass("hidden");
+    $(document).find(".js-street-section").removeClass("hidden");
     $(".js-login").addClass("hidden");
     console.log("login validated");
   } else {
     $(document).find("p.js-login-msg").html(`<p>Login details incorrect</p>`);
   }
+  console.log("login page login button clicked");
+  $(document).find(".js-login-section").addClass("hidden");
+  $(document).find(".js-street-section").removeClass("hidden");
+})
+
+$(".js-add-street-button").on("click", event => {
+  console.log("add street button clicked");
+  $(document).find(".js-add-street-form").removeClass("hidden");
 })
 
 // takes array, returns new array of HTML template literals, appends to street list element
@@ -82,9 +120,15 @@ function renderStreetList() {
   $('.js-street-list').html(listHTML);
 }
 
+//not working, not sure why
+$(".js-add-street-to-list-button").on("click"), event => {
+  $(document).find(".js-add-street-form").addClass("hidden");
+}
+
+
 //Takes street form input, adds to street list. re-render list
 function  addStreetToList() {
-  $('.js-street-input').submit(event => {
+  $('.js-street-input-form').submit(event => {
     event.preventDefault();
     let street = $('.js-street').val();
     let lowNumber = $('.js-houseNumberLow').val();
@@ -210,8 +254,6 @@ function renderSurvey(event) {
   $(event.target).after(surveyHTML);
 }
 
-
-
 function submitSurveyButton() {
   $(document).on("submit", ".js-survey-form", (event) => {
     event.preventDefault();
@@ -226,6 +268,8 @@ function submitSurveyButton() {
 
 
 function setUpApp() {
+  splashLoginButton()
+  splashRegisterButton()
   renderStreetList();
   addStreetToList();
   streetEditButton();

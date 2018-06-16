@@ -10,26 +10,52 @@
 </head>
 <body>
 
-  <section class="login js-login">
-    <h1>Find My Peoples and Start the Revolution!</h1>
-    <p>This is a political canvassing app that allows you to update property details (single/multi occupancy) and log voter intention</p>
-          <form role="form" action="#" method="post" class="js-login">
-            <label for="userName">Username</label>
-            <input class="input js-userName" id="userName" name="userName" type="text" placeholder="eg. Boris Johnson..." required>
-            <label for="password">Password</label>
-            <input class="input js-password" id="password" name="password" type="text" placeholder="eg. not password123" required>
-            <p style="display: none; color: red" class="login-error">Username and Password not found</p>
-            <button class="button js-login-button" type="submit">Login</button>
-            <p class="js-login-msg"></p>
-            <p>For testing - username "test" password "password"</p>
-          </form>
+  <section class="splash js-splash-section">
+    <h1>Find My Peoples</h1>
+    <p>This is a political canvassing app that simplifies data collection. Start by adding the streets you want to survey, then begin collecting information for each household</p>
+    <button class="button js-splash-login-button">login</button>
+    <button class="button js-splash-register-button">register</button>
   </section>
 
-  <section class="js-main-section">
-    <div>
-      <h1>Street List</h1>
-      <h2>Add a street to the list</h2>
-      <form role="form" action="#" method="post" class="js-street-input">
+  <section class="js-login-section hidden">
+    <h1>Login</h1>
+    <form role="form" action="#" method="post" class="js-login">
+      <label for="loginUserName">Username</label>
+      <input class="input js-login-userName" id="loginUserName" name="loginUserName" type="text" required>
+      <label for="loginPassword">Password</label>
+      <input class="input js-login-password" id="loginPassword" name="loginPassword" type="text" required>
+      <p style="display: none; color: red" class="login-error">Username and Password not found</p>
+      <button class="button js-login-page-submit-button" type="submit">submit</button>
+      <p class="js-login-msg"></p>
+      <p>Not registered yet? Sign up here!</p>
+      <button class="button js-login-page-reg-button">register</button>
+      <button class="button js-login-page-home-button">home</button>
+    </form>
+  </section>
+
+  <section class="js-register-section hidden">
+    <h1>Register</h1>
+    <form role="form" action="#" method="post" class="js-register">
+      <label for="registerUserName">Username</label>
+      <input class="input js-register-userName" id="registerUserName" name="registerUserName" type="text" required>
+      <label for="registerPassword">Password</label>
+      <input class="input js-register-password" id="registerPassword" name="registerPassword" type="text"required>
+      <p style="display: none; color: red" class="register-error">Username and Password not found</p>
+      <button class="button js-register-page-register-button" type="submit">submit</button>
+      <p class="js-register-msg"></p>
+      <p>Not registered yet? Sign up here!</p>
+      <button class="button js-reg-page-reg-button">register</button>
+      <button class="button js-reg-page-home-button">home</button>
+    </form>
+  </section>
+
+
+
+  <section class="js-street-section hidden">
+    <h1>Street List</h1>
+    <button class="button js-add-street-button" type="submit">add street</button>
+    <div class="js-add-street-form hidden">
+      <form role="form" action="#" method="post" class="js-street-input-form">
         <label for="street">Enter Street</label>
         <input class="input js-street" id="street" name="street" type="text" placeholder="eg. Oxford Street..." required>
         <label for="houseNumberRange">Enter property number range</label>
@@ -37,14 +63,17 @@
         <label for="houseNumberRange">to</label>
         <input class="input js-houseNumberHigh" id="houseNumberRange" name="houseNumberRange" type="number" placeholder="100" required>
         <p style="display: none; color: red" class="login-error">Please enter a number</p>
-        <button class="button" type="submit">Add to list</button>
+        <button class="button js-add-street-to-list-button" type="submit">Add to list</button>
       </form>
     </div>
 
-    <div class="js-street-section">
-      <h2>Edit the list</h2>
+    <div>
       <div class=js-street-list></div>
     </div>
+  </section>
+
+  <section class="js-property-section hidden">
+    <h1>Property List</h1>
   </section>
 
   <script
