@@ -14,3 +14,13 @@ section {
   margin: 20px;
   border: 1px solid black;
 }
+
+a:hover {
+  cursor: pointer;
+  color: red;
+}
+
+button:hover {
+  cursor: pointer;
+  color: red;
+}
