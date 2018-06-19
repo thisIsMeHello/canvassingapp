@@ -3,9 +3,13 @@
 let STORE = {
   streetID: null,
   streetNum: null,
+  streetName: null,
+  streetLowNumber: null,
+  streetHighNumber: null,
 }
 
 let streets = [];
+let occupants = [];
 
 function getStreetById(id) {
   let street = streets.find(street => {
@@ -33,24 +37,6 @@ function splashLoginLink(){
   })
 }
 
-// function splashRegisterLink(){
-//   $(document).on("click", ".js-splash-register-link", function(event) {
-//     event.preventDefault();
-//     console.log("splash register link clicked");
-//     $(document).find(".js-register-section").removeClass("hidden");
-//     $(document).find(".js-splash-section").addClass("hidden");
-//   })
-// }
-
-// function loginRegisterLink(){
-//   $(document).on("click", ".js-login-page-reg-link", function(event) {
-//     event.preventDefault();
-//     console.log("login register link clicked");
-//     $(document).find(".js-register-section").removeClass("hidden");
-//     $(document).find(".js-login-section").addClass("hidden");
-//   })
-// }
-
 function loginHomeLink(){
   $(document).on("click", ".js-login-page-home-link", function(event) {
     event.preventDefault();
@@ -59,23 +45,6 @@ function loginHomeLink(){
     $(document).find(".js-login-section").addClass("hidden");
   })
 }
-
-// function registerHomeLink(){
-//   $(document).on("click", ".js-reg-page-home-link", function(event) {
-//     event.preventDefault();
-//     console.log("register page home link clicked");
-//     $(document).find(".js-splash-section").removeClass("hidden");
-//     $(document).find(".js-register-section").addClass("hidden");
-//   })
-// }
-
-// function loginSubmitButton(){
-//   $(document).on("click", ".js-login-page-submit-button", function() {
-//     console.log("login page login button clicked");
-//     $(document).find(".js-login-section").addClass("hidden");
-//     $(document).find(".js-street-section").removeClass("hidden");
-//   })
-// }
 
 $(".js-login-page-submit-button").on("click", event => {
   console.log("login button clicked");
@@ -122,7 +91,7 @@ function renderStreetList() {
     return `
       <div class="section-container">
         <div class="street-edit-delete">
-          <p>${street.name} ${street.from} to ${street.to}</p>
+          <p class="street-details"><span class="listStreetName">${street.name}</span> <span class="listStreetFrom">${street.from}</span> to <span class="listStreetTo">${street.to}</span></p>
           <div data-id="${street.id}" class="js-street-buttons">
             <button data-id="${street.id}" class="js-edit-button btn-edit-${street.id}">edit</button>
             <button data-id="${street.id}" class="js-delete-button">delete</button>
@@ -238,57 +207,82 @@ function streetCanvassButton() {
     event.preventDefault();
     console.log("survey button clicked");
     STORE.streetID = $(event.target).data("id");
+    console.log(STORE.streetID);
+    STORE.streetName = $(event.currentTarget).closest(".section-container").find(".listStreetName").text();
+    STORE.streetLowNumber = $(event.currentTarget).closest(".section-container").find(".listStreetFrom").text();
+    STORE.streetHighNumber = $(event.currentTarget).closest(".section-container").find(".listStreetTo").text();
+    console.log(STORE.streetName, STORE.streetLowNumber, STORE.streetHighNumber)
     $(document).find(".js-property-section").removeClass("hidden");
     $(document).find(".js-street-section").addClass("hidden");
+    $(document).find(".js-property-section h2").html(`${STORE.streetName} ${STORE.streetLowNumber} to ${STORE.streetHighNumber}`);
   })
 }
 
-
-
-// function startSurveyButton() {
-//   $(document).on("click", ".js-start-survey-button", (event) => {
-//     event.preventDefault();
-//     STORE.streetNum = $(event.target).prev().val();
-//     console.log("start survey clicked", STORE.streetNum);
-//     renderSurvey(event);
-//   })
-// }
-
-function renderSurvey(event) {
-  const surveyHTML = `
-    <form role="form" action="#" method="post" class="js-survey-form">
-      <label for="survey-first-name">First Name</label>
-      <input id="survey-first-name" type="text">
-      <label for="survey-surname">Surname</label>
-      <input id="survey-surname" type="text">
-      <label for="survey-voting-intention">Voting Intention</label>
-      <input id="surney-voting-intention" type="text">
-      <button class="js-save-survey">Save</button>
-      <button class="js-save-survey">Cancel</button>
-    </form>
-  `
-  $(event.target).after(surveyHTML);
-}
-
-function submitSurveyButton() {
-  $(document).on("submit", ".js-survey-form", (event) => {
+function addOccupantButton() {
+  $(document).on("click", ".js-survey-add-occupant-button", (event) => {
     event.preventDefault();
-    console.log("submit clicked", name);
-    let name = event.target.name.value
-
+    console.log("add occupant button clicked");
+    let propertyNumber = $(".js-Property-survey-number").val();
+    $(document).find(".propertyNumberForm").addClass("hidden");
+    $(document).find(".js-survey-form").removeClass("hidden");
+    $(document).find(".js-property-section h2").text(`Property number ${propertyNumber}`);
   })
 }
 
+function addOccupantButton2() {
+  $(document).on("click", ".js-survey-add-occupant-button2", (event) => {
+    event.preventDefault();
+    console.log("add occupant button clicked");
+    let propertyNumber = $(".js-Property-survey-number").val();
+    $(document).find(".propertyNumberForm").addClass("hidden");
+    $(document).find(".js-survey-form").removeClass("hidden");
+    $(document).find(".js-property-section h2").text(`Property number ${propertyNumber}`);
+  })
+}
 
+function addOccupantToList() {
+  $(".js-survey-form").submit(event => {
+    event.preventDefault();
+    let firstName = $('.js-firstName').val();
+    let surname = $('.js-surname').val();
+    let votingIntention = $('.js-voting-intention').val();
+    let newResident = {
+      firstName: firstName,
+      surname: surname,
+      votingIntention: votingIntention,
+    }
+    console.log(newResident);
+    $(".js-add-street-form").addClass("hidden");
+    $(".js-survey-form").addClass("hidden");
+    $(".js-survey-add-occupant-button2").removeClass("hidden");
 
+    $('.js-firstName').val("");
+    $('.js-surname').val("");
+    $('.js-voting-intention').val("");
+  })
+}
 
+// function renderOccupantList() {
+//   const occupantsHTML = occupants.map(occupant => {
+//     return `
+//       <div class="section-container">
+//         <div class="occupant-edit-delete">
+//           <p class="occupant-details"><span class="listStreetName">${street.name}</span> <span class="listStreetFrom">${street.from}</span> to <span class="listStreetTo">${street.to}</span></p>
+//           <div data-id="${street.id}" class="js-street-buttons">
+//             <button data-id="${street.id}" class="js-edit-button btn-edit-${street.id}">edit</button>
+//             <button data-id="${street.id}" class="js-delete-button">delete</button>
+//             <button data-id="${street.id}" class="js-survey-button">survey</button>
+//           <div>
+//         </div>
+//       </div>
+//     `
+//   });
+//   $('.js-street-list').html(listHTML);
+// }
 
 function setUpApp() {
   splashLoginLink();
-  // splashRegisterLink();
-  // loginRegisterLink()
   loginHomeLink()
-  // registerHomeLink()
   renderStreetList();
   addStreetToList();
   streetHomeLink()
@@ -297,8 +291,10 @@ function setUpApp() {
   streetEditCancelButton();
   streetEditSaveButton();
   streetCanvassButton();
-  startSurveyButton();
-  submitSurveyButton();
+  addOccupantButton();
+  addOccupantToList();
+  addOccupantButton2();
+  // renderOccupantList();
 }
 
 $(setUpApp);
