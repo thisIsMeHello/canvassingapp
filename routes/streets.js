@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 });
 
 router.post("/", (req, res, next) => {
-  const requiredFields = ["streetName", "postCode", "numRangeStart", "numRangeEnd"];
+  const requiredFields = ["streetName", "numRangeStart", "numRangeEnd"];
   const missingField = requiredFields.find(field  => !(field in req.body));
   if (missingField) {
     const err = new Error(`Missing '${missingField}' in request body`);
@@ -27,17 +27,17 @@ router.post("/", (req, res, next) => {
     err.status = 422;
     return next(err);
   }
-  const {streetName, postCode, numRangeStart, numRangeEnd } = req.body;
+  const {streetName, numRangeStart, numRangeEnd } = req.body;
 
   Street
     .create({
       //es6 shortened version, replaces "streetName: streetName"
       streetName,
-      postCode,
+      // postCode,
       numRangeStart,
       numRangeEnd
     })
-    .then(blogPost => res.status(201).json(blogPost))
+    .then(street => res.status(201).json(street))
     .catch(err => {
       console.error(err);
       res.status(500).json({ error: 'Something went wrong' });

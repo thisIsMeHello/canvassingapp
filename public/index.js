@@ -8,14 +8,19 @@ let STORE = {
   streetHighNumber: null,
 }
 
-let streets = [];
+// let streets = [];
 let occupants = [];
 
-function getStreetById(id) {
-  let street = streets.find(street => {
-    return street.id == id;
+function getStreetById(id, callback) {
+  $.ajax({
+    url: "/api/streets/" + id,
+    method: "GET",
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
   })
-  return street;
+  .done(response => {
+    callback(response && response.street)
+  })
 }
 
 function validate(user, pass) {
@@ -64,9 +69,11 @@ $(".js-login-page-submit-button").on("click", event => {
   }
 })
 
+//exposes form for adding street
 $(".js-add-street-button").on("click", event => {
   console.log("add street button clicked");
   $(document).find(".js-add-street-form").removeClass("hidden");
+
 })
 
 $(".js-cancel-add-street-button").on("click", event => {
@@ -86,48 +93,89 @@ function streetHomeLink(){
   })
 }
 
-function renderStreetList() {
+function renderStreetList(data) {
+  var streets;
+  if(data && data.streets){
+    streets = data.streets;
+  }
+  if (typeof streets !== "object" ||typeof streets.length !== "number" ) {
+    return;
+  }
   const listHTML = streets.map(street => {
     return `
       <div class="section-container">
         <div class="street-edit-delete">
-          <p class="street-details"><span class="listStreetName">${street.name}</span> <span class="listStreetFrom">${street.from}</span> to <span class="listStreetTo">${street.to}</span></p>
-          <div data-id="${street.id}" class="js-street-buttons">
-            <button data-id="${street.id}" class="js-edit-button btn-edit-${street.id}">edit</button>
-            <button data-id="${street.id}" class="js-delete-button">delete</button>
-            <button data-id="${street.id}" class="js-survey-button">survey</button>
+          <p class="street-details"><span class="listStreetName">${street.streetName}</span> <span class="listStreetFrom">${street.numRangeStart}</span> to <span class="listStreetTo">${street.numRangeEnd}</span></p>
+          <div data-id="${street._id}" class="js-street-buttons">
+            <button data-id="${street._id}" class="js-edit-button btn-edit-${street.id}">edit</button>
+            <button data-id="${street._id}" class="js-delete-button">delete</button>
+            <button data-id="${street._id}" class="js-survey-button">survey</button>
           <div>
         </div>
       </div>
     `
   });
-  $('.js-street-list').html(listHTML);
+  const html = listHTML.join('');
+  console.log(html, $('.js-street-list').length)
+
+  //join converts array of strings to single string
+  $('.js-street-list').html(html);
+
 }
 
-$(".js-add-street-to-list-button").on("click"), event => {
-  $(document).find(".js-add-street-form").addClass("hidden");
+// form button that hides add street form
+// $(".js-add-street-to-list-button").on("click"), event => {
+//   console.log("add street to list button pressed");
+//   $(document).find(".js-add-street-form").addClass("hidden");
+// }
+
+function getStreetsAndRender(){
+
+  let settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "/api/streets",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json",
+    "Cache-Control": "no-cache",
+  }
+  }
+  $.ajax(settings).done(function(response){
+    console.log(response);
+    renderStreetList(response)
+  })
 }
 
 
-//Takes street form input, adds to street list. re-render list
 function  addStreetToList() {
   $(".js-street-input-form").submit(event => {
+    console.log("street submitted");
     event.preventDefault();
     let street = $('.js-street').val();
     let lowNumber = $('.js-houseNumberLow').val();
     let highNumber = $('.js-houseNumberHigh').val();
     let newStreetObject = {
-      name: street,
-      from: lowNumber,
-      to: highNumber,
-      id: (streets.length + 1)
+      streetName: street,
+      numRangeStart: lowNumber,
+      numRangeEnd: highNumber,
     }
-    streets.unshift(newStreetObject);
-    renderStreetList();
+
     $(".js-add-street-form").addClass("hidden");
     $('.js-street').val("");
     $('.js-houseNumberLow').val("");
     $('.js-houseNumberHigh').val("");
+
+    $.ajax({
+      url: "/api/streets/",
+      method: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(newStreetObject)
+    })
+    .done(reply => {
+      getStreetsAndRender(reply);
+    })
   })
 }
 
@@ -153,10 +201,12 @@ function renderEditForm(street) {
 function streetEditButton() {
   $(document).on("click", ".js-edit-button", (event) => {
     let id = $(event.target).data("id")
-    let street = getStreetById(id);
-    let renderFormHTML = renderEditForm(street);
-    $(event.target).closest(".js-street-buttons").addClass("hidden");
-    $(event.target).parent().after(renderFormHTML);
+    getStreetById(id, street => {
+      let renderFormHTML = renderEditForm(street);
+      $(event.target).closest(".js-street-buttons").addClass("hidden");
+      $(event.target).parent().after(renderFormHTML);
+    });
+
   });
 }
 
@@ -246,44 +296,48 @@ function addOccupantToList() {
     let firstName = $('.js-firstName').val();
     let surname = $('.js-surname').val();
     let votingIntention = $('.js-voting-intention').val();
-    let newResident = {
+    let newOccupant = {
       firstName: firstName,
       surname: surname,
       votingIntention: votingIntention,
     }
-    console.log(newResident);
+    console.log(newOccupant);
+    $("#residentList").append(renderOccupantHTML(newOccupant));
+
     $(".js-add-street-form").addClass("hidden");
     $(".js-survey-form").addClass("hidden");
-    $(".js-survey-add-occupant-button2").removeClass("hidden");
+    $(".js-survey-button-group").removeClass("hidden");
 
     $('.js-firstName').val("");
     $('.js-surname').val("");
     $('.js-voting-intention').val("");
+
+    occupants.push(newOccupant);
+    console.log(occupants);
   })
 }
 
-// function renderOccupantList() {
-//   const occupantsHTML = occupants.map(occupant => {
+// function renderOccupantHTML(occupant) {
 //     return `
-//       <div class="section-container">
-//         <div class="occupant-edit-delete">
-//           <p class="occupant-details"><span class="listStreetName">${street.name}</span> <span class="listStreetFrom">${street.from}</span> to <span class="listStreetTo">${street.to}</span></p>
-//           <div data-id="${street.id}" class="js-street-buttons">
-//             <button data-id="${street.id}" class="js-edit-button btn-edit-${street.id}">edit</button>
-//             <button data-id="${street.id}" class="js-delete-button">delete</button>
-//             <button data-id="${street.id}" class="js-survey-button">survey</button>
-//           <div>
-//         </div>
-//       </div>
+//       <li>
+//         ${occupant.firstName} ${occupant.surname}   ${occupant.votingIntention}
+//       </li>
 //     `
-//   });
-//   $('.js-street-list').html(listHTML);
 // }
+
+// function renderOccupantList(occupants) {
+//   const occupantsHTML = occupants.map(occupant => {
+//     return renderOccupantHTML(occupant);
+//   });
+//   $('#residentList').html(occupantsHTML);
+// }
+
 
 function setUpApp() {
   splashLoginLink();
   loginHomeLink()
   renderStreetList();
+  getStreetsAndRender();
   addStreetToList();
   streetHomeLink()
   streetEditButton();
@@ -294,6 +348,7 @@ function setUpApp() {
   addOccupantButton();
   addOccupantToList();
   addOccupantButton2();
+  // renderOccupantHTML();
   // renderOccupantList();
 }
 
