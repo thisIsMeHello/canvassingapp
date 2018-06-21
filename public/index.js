@@ -8,7 +8,7 @@ let STORE = {
   streetHighNumber: null,
 }
 
-// let streets = [];
+let streets = [];
 let occupants = [];
 
 function getStreetById(id, callback) {
@@ -18,9 +18,7 @@ function getStreetById(id, callback) {
     dataType: "json",
     contentType: "application/json; charset=utf-8",
   })
-  .done(response => {
-    callback(response && response.street)
-  })
+  .done(callback);
 }
 
 function validate(user, pass) {
@@ -94,14 +92,9 @@ function streetHomeLink(){
 }
 
 function renderStreetList(data) {
-  var streets;
-  if(data && data.streets){
-    streets = data.streets;
-  }
-  if (typeof streets !== "object" ||typeof streets.length !== "number" ) {
-    return;
-  }
-  const listHTML = streets.map(street => {
+  let streets = data.streets;
+
+  let listHTML = streets.map(street => {
     return `
       <div class="section-container">
         <div class="street-edit-delete">
@@ -116,7 +109,7 @@ function renderStreetList(data) {
     `
   });
   const html = listHTML.join('');
-  console.log(html, $('.js-street-list').length)
+
 
   //join converts array of strings to single string
   $('.js-street-list').html(html);
@@ -139,7 +132,7 @@ function getStreetsAndRender(){
   "headers": {
     "Content-Type": "application/json",
     "Cache-Control": "no-cache",
-  }
+    }
   }
   $.ajax(settings).done(function(response){
     console.log(response);
@@ -174,23 +167,26 @@ function  addStreetToList() {
       data: JSON.stringify(newStreetObject)
     })
     .done(reply => {
+      console.log("street posted to database");
       getStreetsAndRender(reply);
     })
   })
 }
 
-function renderEditForm(street) {
+function renderEditForm(data) {
+  let street = data.street;
+  console.log(street);
   let formHTML = `
   <div id="editForm" class="edit-section">
     <form role="form" action="#" method="post" class="js-street-edit">
       <label for="street-edit">Edit Street Name</label>
-      <input value="${street.name}" class="input js-street-edit" id="street-edit" name="street-edit" type="text" placeholder="eg. Oxford Street...">
+      <input value="${street.streetName}" class="input js-street-edit" id="street-edit" name="street-edit" type="text" placeholder="eg. Oxford Street...">
       <label for="houseNumberRange">Edit property number range</label>
-      <input value="${street.from}" class="input js-lowNumEdit" id="lowNumEdit" name="lowNumEdit" type="number" placeholder="0">
+      <input value="${street.numRangeStart}" class="input js-lowNumEdit" id="lowNumEdit" name="lowNumEdit" type="number" placeholder="0">
       <label for="highNumEdit">to</label>
-      <input value="${street.to}" class="input js-highNumEdit" id="highNumEdit" name="highNumEdit" type="number" placeholder="100">
+      <input value="${street.numRangeEnd}" class="input js-highNumEdit" id="highNumEdit" name="highNumEdit" type="number" placeholder="100">
       <p style="display: none; color: red" class="login-error">Please enter a number</p>
-      <button data-id="${street.id}" class="button js-save-button" type="submit">Save</button>
+      <button data-id="${street._id}" class="button js-save-button" type="submit">Save</button>
       <button class="button js-cancel-button" type="submit">Cancel</button>
     </form>
   </div>
@@ -201,12 +197,11 @@ function renderEditForm(street) {
 function streetEditButton() {
   $(document).on("click", ".js-edit-button", (event) => {
     let id = $(event.target).data("id")
-    getStreetById(id, street => {
-      let renderFormHTML = renderEditForm(street);
+    getStreetById(id, function(editStreet){
+      let renderFormHTML = renderEditForm(editStreet);
       $(event.target).closest(".js-street-buttons").addClass("hidden");
       $(event.target).parent().after(renderFormHTML);
-    });
-
+    })
   });
 }
 
@@ -261,7 +256,6 @@ function streetCanvassButton() {
     STORE.streetName = $(event.currentTarget).closest(".section-container").find(".listStreetName").text();
     STORE.streetLowNumber = $(event.currentTarget).closest(".section-container").find(".listStreetFrom").text();
     STORE.streetHighNumber = $(event.currentTarget).closest(".section-container").find(".listStreetTo").text();
-    console.log(STORE.streetName, STORE.streetLowNumber, STORE.streetHighNumber)
     $(document).find(".js-property-section").removeClass("hidden");
     $(document).find(".js-street-section").addClass("hidden");
     $(document).find(".js-property-section h2").html(`${STORE.streetName} ${STORE.streetLowNumber} to ${STORE.streetHighNumber}`);
@@ -301,7 +295,6 @@ function addOccupantToList() {
       surname: surname,
       votingIntention: votingIntention,
     }
-    console.log(newOccupant);
     $("#residentList").append(renderOccupantHTML(newOccupant));
 
     $(".js-add-street-form").addClass("hidden");
@@ -313,7 +306,6 @@ function addOccupantToList() {
     $('.js-voting-intention').val("");
 
     occupants.push(newOccupant);
-    console.log(occupants);
   })
 }
 
@@ -336,7 +328,6 @@ function addOccupantToList() {
 function setUpApp() {
   splashLoginLink();
   loginHomeLink()
-  renderStreetList();
   getStreetsAndRender();
   addStreetToList();
   streetHomeLink()
