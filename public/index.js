@@ -59,7 +59,6 @@ $(".js-login-page-submit-button").on("click", event => {
   if (validate(inputUsername, inputPassword)) {
     $(document).find(".js-street-section").removeClass("hidden");
     $(".js-login-section").addClass("hidden");
-    console.log("login validated");
   } else {
     $(document).find("p.js-login-msg").html(`<p>Login details incorrect</p>`);
     $(document).find(".js-login-userName").val("");
@@ -116,12 +115,6 @@ function renderStreetList(data) {
 
 }
 
-// form button that hides add street form
-// $(".js-add-street-to-list-button").on("click"), event => {
-//   console.log("add street to list button pressed");
-//   $(document).find(".js-add-street-form").addClass("hidden");
-// }
-
 function getStreetsAndRender(){
 
   let settings = {
@@ -135,12 +128,11 @@ function getStreetsAndRender(){
     }
   }
   $.ajax(settings).done(function(response){
-    console.log(response);
     renderStreetList(response)
   })
 }
 
-
+//adds street to database, renders streetlist to the DOM
 function  addStreetToList() {
   $(".js-street-input-form").submit(event => {
     console.log("street submitted");
@@ -148,6 +140,7 @@ function  addStreetToList() {
     let street = $('.js-street').val();
     let lowNumber = $('.js-houseNumberLow').val();
     let highNumber = $('.js-houseNumberHigh').val();
+
     let newStreetObject = {
       streetName: street,
       numRangeStart: lowNumber,
@@ -175,7 +168,6 @@ function  addStreetToList() {
 
 function renderEditForm(data) {
   let street = data.street;
-  console.log(street);
   let formHTML = `
   <div id="editForm" class="edit-section">
     <form role="form" action="#" method="post" class="js-street-edit">
@@ -206,15 +198,20 @@ function streetEditButton() {
 }
 
 function streetDeleteButton() {
-  $(document).on("click", ".js-delete-button", function() {
-    let id = $(this).data("id");
-    //gets id of street clicked, returns everything in the list that doesn't have that id
-    let _streets = streets.filter(street => {
-      return street.id !== id;
+  $(document).on("click", ".js-delete-button",(event) => {
+    event.preventDefault();
+    const id2 = $(event.target).data("id");
+
+    $.ajax({
+      url: "/api/streets/" + id2,
+      method: "DELETE",
+      dataType: "json",
+      contentType: "application/json; charset=utf-8",
+      // data: JSON.stringify(newStreetObject)
     })
-    //swaps new list with street removed for old, re-renders list
-    streets = _streets;
-    renderStreetList();
+    .done(reply => {
+      getStreetsAndRender(reply);
+    })
   })
 }
 
@@ -236,14 +233,28 @@ function streetEditSaveButton() {
     event.preventDefault();
     const id2 = $(event.target).data("id");
     const street2 = getStreetById(id2);
-    console.log("save button clicked");
-
     let street = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
     let from = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
     let to = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
+    console.log(street, from, to);
 
-    streets.splice((id2-1), 1, {name: street, from: from, to: to, id:id2});
-    renderStreetList();
+    let newStreetObject = {
+      _id: id2,
+      streetName: street,
+      numRangeStart: from,
+      numRangeEnd: to,
+    }
+
+    $.ajax({
+      url: "/api/streets/" + id2,
+      method: "PUT",
+      dataType: "json",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(newStreetObject)
+    })
+    .done(reply => {
+      getStreetsAndRender(reply);
+    })
   })
 }
 
