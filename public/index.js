@@ -74,7 +74,6 @@ $(".js-login-page-submit-button").on("click", event => {
   event.preventDefault();
   let inputUsername = $(".js-login-userName").val();
   let inputPassword = $(".js-login-password").val();
-  console.log(inputUsername, inputPassword);
 
   if (validate(inputUsername, inputPassword)) {
     $(document).find(".js-street-section").removeClass("hidden");
@@ -128,8 +127,6 @@ function renderStreetList(data) {
     `
   });
   const html = listHTML.join('');
-
-
   //join converts array of strings to single string
   $('.js-street-list').html(html);
 
@@ -256,7 +253,6 @@ function streetEditSaveButton() {
     let street = $(event.currentTarget).closest('.section-container').find('input[name=street-edit]').val();
     let from = $(event.currentTarget).closest('.section-container').find('input[name=lowNumEdit]').val();
     let to = $(event.currentTarget).closest('.section-container').find('input[name=highNumEdit]').val();
-    console.log(street, from, to);
 
     let newStreetObject = {
       _id: id2,
@@ -325,9 +321,7 @@ function cancelPropertyInputButton() {
 // }
 
 function renderPropertyList(data) {
-
-  });
-
+  let properties = data.properties;
 
   let listHTML = properties.map(property => {
     return `
@@ -349,10 +343,13 @@ function renderPropertyList(data) {
 
 
 function getPropertiesAndRender(){
+ console.log("getProps", STORE.streetID);
+  let _url = `/api/streets/${STORE.streetID}/properties`
+  console.log(_url);
   let settings = {
   "async": true,
   "crossDomain": true,
-  "url": "/api/properties",
+  "url": _url,
   "method": "GET",
   "headers": {
     "Content-Type": "application/json",
@@ -369,7 +366,6 @@ function addPropertyToList() {
   $(document).on("click", ".js-survey-add-button", (event) => {
     event.preventDefault();
     console.log("js-survey-add-button clicked");
-    console.log(STORE.streetID)
     let propertyNumber = $('.js-property-survey-number').val();
 
     let newPropertyObject = {
