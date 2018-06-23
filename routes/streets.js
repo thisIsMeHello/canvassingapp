@@ -2,6 +2,7 @@
 
 const express = require("express");
 const Street = require("../models/street");
+const Property = require("../models/property");
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -55,6 +56,20 @@ router.get('/:id', (req, res) => {
     .catch(err => {
       console.error(err);
       res.status(500).json({ error: 'something went very horribly awry' });
+    });
+});
+
+router.get('/:id/properties', (req, res) => {
+  Property
+    .find({street: req.params.id})
+    .then(properties => {
+      res.json({
+      properties
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'something went very horribly awry with getting properties by street id' });
     });
 });
 

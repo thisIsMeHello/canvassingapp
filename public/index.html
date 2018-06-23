@@ -58,17 +58,27 @@
   <section class="js-property-section hidden">
     <h1>Street Survey</h1>
     <h2></h2>
+    <h3></h3>
     <form class="propertyNumberForm">
-      <label for="PropertySurveyNumber">Enter property to Survey</label>
-      <input class="input js-Property-survey-number" id="PropertySurveyNumber" name="PropertySurveyNumber" type="number" value=5>
-      <button class="button js-survey-add-occupant-button" type="submit">add occupant</button>
+      <div class="property-input hidden">
+        <label for="PropertySurveyNumber">Add property</label>
+        <input class="input js-property-survey-number" id="PropertySurveyNumber" name="PropertySurveyNumber" type="number">
+        <button class="button js-survey-add-button" type="submit">add</button>
+        <button class="button js-survey-cancel-add-button" type="submit">cancel</button>
+      </div>
+
+      <button class="button js-survey-expose-property-input-button" type="submit">add property</button>
+      <button class="button js-survey-cancel-property-input-button" type="submit">cancel</button>
+
     </form>
 
-    <div class="survey-button-group hidden">
+    <div class="js-property-number-list"></div>
+
+    <!-- <div class="survey-button-group hidden">
       <button class="button js-survey-add-occupant-button2" type="submit">add occupant</button>
       <button class="button js-survey-back-to-streetList" type="submit">back to street list</button>
       <button class="button js-survey-home" type="submit">Home</button>
-    </div>
+    </div> -->
 
     <form role="form" action="#" method="post" class="js-survey-form hidden">
       <label for="survey-first-name">First Name</label>

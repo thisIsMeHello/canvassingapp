@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 });
 
 router.post("/", (req, res, next) => {
-  const requiredFields = ["propertyNum", "apartment", "street"];
+  const requiredFields = ["propertyNum", "street"];
   const missingField = requiredFields.find(field  => !(field in req.body));
   if (missingField) {
     const err = new Error(`Missing '${missingField}' in request body`);

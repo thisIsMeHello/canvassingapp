@@ -21,6 +21,26 @@ function getStreetById(id, callback) {
   .done(callback);
 }
 
+function getPropertyById(id, callback) {
+  $.ajax({
+    url: "/api/properties/" + id,
+    method: "GET",
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
+  })
+  .done(callback);
+}
+
+function getResidentsById(id, callback) {
+  $.ajax({
+    url: "/api/residents" + id,
+    method: "GET",
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
+  })
+  .done(callback);
+}
+
 function validate(user, pass) {
   let username = "test";
   let password = "password";
@@ -258,29 +278,116 @@ function streetEditSaveButton() {
   })
 }
 
-function streetCanvassButton() {
+function streetSurveyButton() {
   $(document).on("click", ".js-survey-button", (event) => {
     event.preventDefault();
     console.log("survey button clicked");
     STORE.streetID = $(event.target).data("id");
-    console.log(STORE.streetID);
-    STORE.streetName = $(event.currentTarget).closest(".section-container").find(".listStreetName").text();
-    STORE.streetLowNumber = $(event.currentTarget).closest(".section-container").find(".listStreetFrom").text();
-    STORE.streetHighNumber = $(event.currentTarget).closest(".section-container").find(".listStreetTo").text();
+
+    let id = STORE.streetID;
+
+    getStreetById(id, (data) => {
+      $(document).find(".js-property-section h2").html(`${data.street.streetName} ${data.street.numRangeStart} to ${data.street.numRangeEnd}`);
+    })
+
     $(document).find(".js-property-section").removeClass("hidden");
     $(document).find(".js-street-section").addClass("hidden");
-    $(document).find(".js-property-section h2").html(`${STORE.streetName} ${STORE.streetLowNumber} to ${STORE.streetHighNumber}`);
+
+    getPropertiesAndRender();
   })
 }
 
-function addOccupantButton() {
-  $(document).on("click", ".js-survey-add-occupant-button", (event) => {
+function exposePropertyInputButton() {
+  $(document).on("click", ".js-survey-expose-property-input-button", (event) => {
     event.preventDefault();
-    console.log("add occupant button clicked");
-    let propertyNumber = $(".js-Property-survey-number").val();
-    $(document).find(".propertyNumberForm").addClass("hidden");
-    $(document).find(".js-survey-form").removeClass("hidden");
-    $(document).find(".js-property-section h2").text(`Property number ${propertyNumber}`);
+    console.log("add property button clicked");
+    let propertyNumber = $(".js-property-survey-number").val();
+    $(document).find(".property-input").removeClass("hidden");
+    $(document).find(".js-survey-expose-property-input-button").addClass("hidden");
+    $(document).find(".js-survey-cancel-property-input-button").addClass("hidden");
+  })
+}
+
+//not yet working
+function cancelPropertyInputButton() {
+  $(document).on("click", "js-survey-cancel-property-input-button", (event) => {
+    console.log("js-survey-cancel-property-input-button clicked");
+    event.preventDefault();
+    $(document).find(".js-property-section").addClass("hidden");
+    $(document).find(".js-street-section").removeClass("hidden");
+
+  })
+}
+
+// function filterForStreetID(properties){
+//   console.log("filter", properties, properties_id);
+//   return properties._id == STORE.streetID
+// }
+
+function renderPropertyList(data) {
+
+  });
+
+
+  let listHTML = properties.map(property => {
+    return `
+      <div class="section-container">
+        <div class="property-edit-delete">
+          <h2>${property.propertyNum}</h2>
+          <div data-id="${property._id}" class="js-property-buttons">
+            <button data-id="${property._id}" class="js-delete-button">delete</button>
+            <button data-id="${property._id}" class="js-survey-button">survey</button>
+          <div>
+        </div>
+      </div>
+    `
+  });
+  const html = listHTML.join('');
+  //join converts array of strings to single string
+  $('.js-property-number-list').html(html);
+}
+
+
+function getPropertiesAndRender(){
+  let settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "/api/properties",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json",
+    "Cache-Control": "no-cache",
+    }
+  }
+  $.ajax(settings).done(function(response){
+    console.log("getPropertiesList and render", response)
+    renderPropertyList(response)
+  })
+}
+
+function addPropertyToList() {
+  $(document).on("click", ".js-survey-add-button", (event) => {
+    event.preventDefault();
+    console.log("js-survey-add-button clicked");
+    console.log(STORE.streetID)
+    let propertyNumber = $('.js-property-survey-number').val();
+
+    let newPropertyObject = {
+      propertyNum: propertyNumber,
+      street: STORE.streetID
+    }
+
+    $.ajax({
+      url: "/api/properties/",
+      method: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(newPropertyObject)
+    })
+    .done(reply => {
+      console.log("property posted to database", reply);
+      getPropertiesAndRender(reply);
+    })
   })
 }
 
@@ -346,8 +453,10 @@ function setUpApp() {
   streetDeleteButton();
   streetEditCancelButton();
   streetEditSaveButton();
-  streetCanvassButton();
-  addOccupantButton();
+  streetSurveyButton();
+  exposePropertyInputButton();
+  cancelPropertyInputButton();
+  addPropertyToList();
   addOccupantToList();
   addOccupantButton2();
   // renderOccupantHTML();

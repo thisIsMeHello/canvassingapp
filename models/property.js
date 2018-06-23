@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const propertySchema = new mongoose.Schema({
   propertyNum: { type: Number, required: true },
-  apartment: { type: Number},
+  // apartment: { type: Number},
   street: { type: mongoose.Schema.Types.ObjectId, ref: 'Street' }
 });
 
