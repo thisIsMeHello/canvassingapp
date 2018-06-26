@@ -6,6 +6,7 @@ let STORE = {
   streetName: null,
   streetLowNumber: null,
   streetHighNumber: null,
+  propertyID: null
 }
 
 let streets = [];
@@ -118,7 +119,7 @@ function renderStreetList(data) {
         <div class="street-edit-delete">
           <p class="street-details"><span class="listStreetName">${street.streetName}</span> <span class="listStreetFrom">${street.numRangeStart}</span> to <span class="listStreetTo">${street.numRangeEnd}</span></p>
           <div data-id="${street._id}" class="js-street-buttons">
-            <button data-id="${street._id}" class="js-edit-button btn-edit-${street.id}">edit</button>
+            <button data-id="${street._id}" class="js-edit-button>edit</button>
             <button data-id="${street._id}" class="js-delete-button">delete</button>
             <button data-id="${street._id}" class="js-survey-button">survey</button>
           <div>
@@ -195,6 +196,7 @@ function renderEditForm(data) {
       <label for="highNumEdit">to</label>
       <input value="${street.numRangeEnd}" class="input js-highNumEdit" id="highNumEdit" name="highNumEdit" type="number" placeholder="100">
       <p style="display: none; color: red" class="login-error">Please enter a number</p>
+
       <button data-id="${street._id}" class="button js-save-button" type="submit">Save</button>
       <button class="button js-cancel-button" type="submit">Cancel</button>
     </form>
@@ -304,21 +306,24 @@ function exposePropertyInputButton() {
   })
 }
 
-//not yet working
-function cancelPropertyInputButton() {
-  $(document).on("click", "js-survey-cancel-property-input-button", (event) => {
+function cancelExposePropertyInputButton() {
+  $(document).on("click", ".js-survey-cancel-add-button", (event) => {
+    event.preventDefault();
+    console.log("cancel expose property input button clicked");
+    $(document).find(".property-input").addClass("hidden");
+    $(document).find(".js-survey-expose-property-input-button").removeClass("hidden");
+    $(document).find(".js-survey-cancel-property-input-button").removeClass("hidden");
+  })
+}
+
+function cancelSurveyStreetButton() {
+  $(document).on("click", ".js-survey-cancel-property-input-button", (event) => {
     console.log("js-survey-cancel-property-input-button clicked");
     event.preventDefault();
     $(document).find(".js-property-section").addClass("hidden");
     $(document).find(".js-street-section").removeClass("hidden");
-
   })
 }
-
-// function filterForStreetID(properties){
-//   console.log("filter", properties, properties_id);
-//   return properties._id == STORE.streetID
-// }
 
 function renderPropertyList(data) {
   let properties = data.properties;
@@ -329,8 +334,8 @@ function renderPropertyList(data) {
         <div class="property-edit-delete">
           <h2>${property.propertyNum}</h2>
           <div data-id="${property._id}" class="js-property-buttons">
-            <button data-id="${property._id}" class="js-delete-button">delete</button>
-            <button data-id="${property._id}" class="js-survey-button">survey</button>
+            <button data-id="${property._id}" class="js-property-delete-button">delete</button>
+            <button data-id="${property._id}" class="js-propertySurvey-button">survey</button>
           <div>
         </div>
       </div>
@@ -343,9 +348,7 @@ function renderPropertyList(data) {
 
 
 function getPropertiesAndRender(){
- console.log("getProps", STORE.streetID);
   let _url = `/api/streets/${STORE.streetID}/properties`
-  console.log(_url);
   let settings = {
   "async": true,
   "crossDomain": true,
@@ -384,60 +387,190 @@ function addPropertyToList() {
       console.log("property posted to database", reply);
       getPropertiesAndRender(reply);
     })
+    $(document).find(".property-input").addClass("hidden");
+    $(document).find(".js-survey-expose-property-input-button").removeClass("hidden");
+    $(document).find(".js-survey-cancel-property-input-button").removeClass("hidden");
   })
 }
 
-function addOccupantButton2() {
-  $(document).on("click", ".js-survey-add-occupant-button2", (event) => {
+function propertySurveyButton() {
+  $(document).on("click", ".js-propertySurvey-button", (event) => {
     event.preventDefault();
-    console.log("add occupant button clicked");
-    let propertyNumber = $(".js-Property-survey-number").val();
-    $(document).find(".propertyNumberForm").addClass("hidden");
+    console.log("property button clicked");
+    STORE.propertyID = $(event.target).data("id");
+    let id = STORE.propertyID;
+    console.log(id);
+
+    getPropertyById(id, (data) => {
+      console.log("getPropertyById is firing", data);
+      $(document).find(".js-property-section h3").html(`Property number ${data.Property.propertyNum}`);
+    })
+
+  $(document).find(".js-property-number-list").addClass("hidden");
+  $(document).find(".js-property-input-buttons").addClass("hidden");
+  $(document).find(".js-occupant-input-buttons").removeClass("hidden");
+  getResidentsAndRender();
+  })
+}
+
+function propertyDeleteButton() {
+  $(document).on("click", ".js-property-delete-button",(event) => {
+    event.preventDefault();
+    const id2 = $(event.target).data("id");
+
+    $.ajax({
+      url: "/api/properties/" + id2,
+      method: "DELETE",
+      dataType: "json",
+      contentType: "application/json; charset=utf-8",
+      // data: JSON.stringify(newStreetObject)
+    })
+    .done(reply => {
+      getPropertiesAndRender(reply);
+    })
+  })
+}
+
+function exposeAddOccupantForm() {
+  $(document).on("click", ".js-survey-expose-occupant-input-button", (event) => {
+    event.preventDefault();
+    console.log("expose add occupant form button clicked");
+    $(document).find(".js-resident-survey-form").removeClass("hidden");
     $(document).find(".js-survey-form").removeClass("hidden");
-    $(document).find(".js-property-section h2").text(`Property number ${propertyNumber}`);
+    $(document).find(".js-occupant-input-buttons").addClass("hidden");
   })
 }
 
-function addOccupantToList() {
-  $(".js-survey-form").submit(event => {
+function cancelExposeAddOccupantForm() {
+  $(document).on("click", ".js-cancel-save-resident", (event) => {
     event.preventDefault();
-    let firstName = $('.js-firstName').val();
-    let surname = $('.js-surname').val();
-    let votingIntention = $('.js-voting-intention').val();
-    let newOccupant = {
+    console.log("cancel expose add occupant form button clicked");
+    $(document).find(".js-resident-survey-form").addClass("hidden");
+    $(document).find(".js-survey-form").addClass("hidden");
+    $(document).find(".js-occupant-input-buttons").removeClass("hidden");
+  })
+}
+
+function renderResidentList(data) {
+  let residents = data.residents;
+
+  let listHTML = residents.map(resident => {
+    return `
+      <div class="section-container">
+        <div class="resident-edit-delete">
+          <h2>${resident.firstName} ${resident.surname}</h2>
+          <h3>${resident.votingIntention}</h3>
+          <div data-id="${resident._id}" class="js-resident-buttons">
+            <button data-id="${resident._id}" class="js-resident-delete-button">delete</button>
+          <div>
+        </div>
+      </div>
+    `
+  });
+  const html = listHTML.join('');
+  //join converts array of strings to single string
+  $('.js-occupant-list').html(html);
+}
+
+
+
+function getResidentsAndRender(){
+  let _url = `/api/properties/${STORE.propertyID}/residents`
+
+  let settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": _url,
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json",
+    "Cache-Control": "no-cache",
+    }
+  }
+  $.ajax(settings).done(function(response){
+    console.log("get OccupantsList and render", response)
+    renderResidentList(response)
+  })
+}
+
+function addResidentToList() {
+  $(document).on("click", ".js-save-resident", (event) => {
+    event.preventDefault();
+    console.log("save resident button clicked");
+    let firstName = $('.survey-first-name').val();
+    let surname = $('.survey-surname').val();
+    let votingIntention = $('.survey-voting-intention').val();
+
+    let newResidentObject = {
       firstName: firstName,
       surname: surname,
       votingIntention: votingIntention,
+      property: STORE.propertyID
     }
-    $("#residentList").append(renderOccupantHTML(newOccupant));
 
-    $(".js-add-street-form").addClass("hidden");
-    $(".js-survey-form").addClass("hidden");
-    $(".js-survey-button-group").removeClass("hidden");
+    console.log(newResidentObject);
 
-    $('.js-firstName').val("");
-    $('.js-surname').val("");
-    $('.js-voting-intention').val("");
+    $(".js-resident-survey-form").addClass("hidden");
+    $('.survey-first-name').val("");
+    $('.survey-surname').val("");
+    $('.survey-voting-intention').val("");
 
-    occupants.push(newOccupant);
+    $.ajax({
+      url: "/api/residents/",
+      method: "POST",
+      dataType: "json",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(newResidentObject)
+    })
+    .done(reply => {
+      console.log("resident posted to database", reply);
+      getResidentsAndRender(reply);
+    })
+    $(document).find(".js-occupant-input-buttons").removeClass("hidden");
   })
 }
 
-// function renderOccupantHTML(occupant) {
-//     return `
-//       <li>
-//         ${occupant.firstName} ${occupant.surname}   ${occupant.votingIntention}
-//       </li>
-//     `
-// }
+function backToPropertyList() {
+  $(document).on("click", ".js-survey-cancel-occupant-input-button", (event) => {
+    event.preventDefault();
+    console.log("back to property list button clicked");
 
-// function renderOccupantList(occupants) {
-//   const occupantsHTML = occupants.map(occupant => {
-//     return renderOccupantHTML(occupant);
-//   });
-//   $('#residentList').html(occupantsHTML);
-// }
+    $(document).find(".js-property-number-list").removeClass("hidden");
+    $(document).find(".js-property-input-buttons").removeClass("hidden");
+    $(document).find(".js-occupant-input-buttons").addClass("hidden");
+    $('.js-occupant-list').html("");
+  // getResidentsAndRender();
+  })
+}
 
+function residentDeleteButton() {
+  $(document).on("click", ".js-resident-delete-button",(event) => {
+    event.preventDefault();
+    const id2 = $(event.target).data("id");
+
+    $.ajax({
+      url: "/api/residents/" + id2,
+      method: "DELETE",
+      dataType: "json",
+      contentType: "application/json; charset=utf-8",
+      // data: JSON.stringify(newStreetObject)
+    })
+    .done(reply => {
+      getResidentsAndRender(reply);
+    })
+  })
+}
+
+function residentEditButton() {
+  $(document).on("click", ".js-resident-edit-button", (event) => {
+    let id = $(event.target).data("id")
+    getResidentsById(id, function(editResident){
+      let renderFormHTML = renderResidentEditForm(editResident);
+      $(event.target).closest(".js-street-buttons").addClass("hidden");
+      $(event.target).parent().after(renderFormHTML);
+    })
+  });
+}
 
 function setUpApp() {
   splashLoginLink();
@@ -451,10 +584,16 @@ function setUpApp() {
   streetEditSaveButton();
   streetSurveyButton();
   exposePropertyInputButton();
-  cancelPropertyInputButton();
+  cancelExposePropertyInputButton();
+  cancelSurveyStreetButton();
   addPropertyToList();
-  addOccupantToList();
-  addOccupantButton2();
+  propertySurveyButton();
+  propertyDeleteButton();
+  exposeAddOccupantForm();
+  cancelExposeAddOccupantForm()
+  addResidentToList();
+  backToPropertyList();
+  residentDeleteButton();
   // renderOccupantHTML();
   // renderOccupantList();
 }

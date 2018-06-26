@@ -59,9 +59,53 @@
     <h1>Street Survey</h1>
     <h2></h2>
     <h3></h3>
+
     <form class="propertyNumberForm">
+
       <div class="property-input hidden">
         <label for="PropertySurveyNumber">Add property</label>
+        <input class="input js-property-survey-number" id="PropertySurveyNumber" name="PropertySurveyNumber" type="number">
+        <button class="button js-survey-add-button" type="submit">add</button>
+        <button class="button js-survey-cancel-add-button" type="submit">cancel</button>
+      </div>
+
+      <div class="js-property-input-buttons">
+        <button class="button js-survey-expose-property-input-button" type="submit">add property</button>
+        <button class="button js-survey-cancel-property-input-button" type="submit">back</button>
+      </div>
+
+    </form>
+
+<!-- this is where the property number list is rendered to -->
+    <div class="js-property-number-list"></div>
+
+    <div class="js-occupant-input-buttons hidden">
+      <button class="button js-survey-expose-occupant-input-button" type="submit">add occupant</button>
+      <button class="button js-survey-cancel-occupant-input-button" type="submit">back</button>
+    </div>
+
+    <form role="form" action="#" method="post" class="js-resident-survey-form hidden">
+      <label for="survey-first-name">First Name</label>
+      <input class="survey-first-name" class="js-firstName" type="text" value="Marcus">
+      <label for="survey-surname">Surname</label>
+      <input class="survey-surname" class="js-surname" type="text" value="Richmond">
+      <label for="survey-voting-intention">Voting Intention</label>
+      <input class="survey-voting-intention" class="js-voting-intention" type="text" value="Labour">
+      <button class="js-save-resident">Save</button>
+      <button class="js-cancel-save-resident">Cancel</button>
+    </form>
+
+    <div class="js-occupant-list"></div>
+
+  <!-- </section>
+
+  <section class="js-occupant-section">
+    <h1>Occupant Survey</h1>
+    <h2></h2>
+    <h3></h3>
+    <form class="occupantForm">
+      <div class="occupant-input">
+        <label for="OccupantSurveyNumber">Add property</label>
         <input class="input js-property-survey-number" id="PropertySurveyNumber" name="PropertySurveyNumber" type="number">
         <button class="button js-survey-add-button" type="submit">add</button>
         <button class="button js-survey-cancel-add-button" type="submit">cancel</button>
@@ -73,12 +117,6 @@
     </form>
 
     <div class="js-property-number-list"></div>
-
-    <!-- <div class="survey-button-group hidden">
-      <button class="button js-survey-add-occupant-button2" type="submit">add occupant</button>
-      <button class="button js-survey-back-to-streetList" type="submit">back to street list</button>
-      <button class="button js-survey-home" type="submit">Home</button>
-    </div> -->
 
     <form role="form" action="#" method="post" class="js-survey-form hidden">
       <label for="survey-first-name">First Name</label>
@@ -93,7 +131,7 @@
 
     <ul id="residentList"></ul>
 
-  </section>
+  </section> -->
 
   <script
       src="https://code.jquery.com/jquery-3.2.1.min.js"
