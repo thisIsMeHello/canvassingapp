@@ -25,7 +25,6 @@ function seedStreetData() {
 function generateStreetData() {
   return {
     "streetName": "Marcus Street",
-    "postCode": "SE22 8TH",
     "numRangeStart": 1,
     "numRangeEnd": 200,
   }
@@ -88,10 +87,10 @@ describe('canvassing-app api endpoints', function () {
           expect(_res).to.be.json;
           expect(_res.body).to.be.a('object');
           expect(_res.body).to.include.keys(
-            'streetName', 'postCode', 'numRangeStart', 'numRangeEnd');
+            'streetName', 'numRangeStart', 'numRangeEnd');
           expect(_res.body.id).to.not.be.null;
           expect(_res.body.streetName).to.equal(newStreet.streetName);
-          expect(_res.body.postCode).to.equal(newStreet.postCode);
+          // expect(_res.body.postCode).to.equal(newStreet.postCode);
           expect(_res.body.numRangeStart).to.equal(newStreet.numRangeStart);
           expect(_res.body.numRangeEnd).to.equal(newStreet.numRangeEnd);
 
@@ -106,8 +105,7 @@ describe('canvassing-app api endpoints', function () {
 
     it('should update fields you send over', function() {
       const updateData = {
-        streetName: 'Chepstow Villas',
-        postCode: 'SW1 9PQ '
+        streetName: 'Chepstow Villas'
       };
 
       return Street
@@ -125,7 +123,7 @@ describe('canvassing-app api endpoints', function () {
         })
         .then(function(Street) {
           expect(Street.streetName).to.equal(updateData.streetName);
-          expect(Street.postCode).to.equal(updateData.postCode);
+          // expect(Street.postCode).to.equal(updateData.postCode);
         });
     });
   });

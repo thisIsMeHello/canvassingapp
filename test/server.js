@@ -1,7 +1,6 @@
 "use strict";
 
 const { app }  = require("../server");
-console.log(app);
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 

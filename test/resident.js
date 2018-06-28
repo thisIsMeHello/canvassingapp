@@ -59,7 +59,6 @@ function seedStreetData() {
     streetData.push(generateStreetData(i));
   }
   return Street.insertMany(streetData);
-  console.log("Is this working?", streetData);
 }
 
 function generateStreetData(i) {

@@ -38,14 +38,13 @@ function seedStreetData() {
     streetData.push(generateStreetData(i));
   }
   return Street.insertMany(streetData);
-  console.log(streetData);
 }
 
 function generateStreetData(i) {
   return {
     "_id": mongoose.Types.ObjectId(i),
     "streetName": "Marcus Street",
-    "postCode": "SE22 8TH",
+    // "postCode": "SE22 8TH",
     "numRangeStart": 1,
     "numRangeEnd": 200,
   }
@@ -108,7 +107,7 @@ describe('canvassing-app api endpoints', function () {
           res.body.properties.forEach(function(property) {
             expect(property).to.be.a('object');
             expect(property).to.include.keys(
-              'propertyNum', 'apartment', 'street');
+              'propertyNum', 'street');
           });
           resProperty = res.body.properties[0];
           return Property.findById(resProperty._id);
@@ -140,11 +139,11 @@ describe('canvassing-app api endpoints', function () {
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
           expect(res.body).to.include.keys(
-            'propertyNum', 'apartment', 'street');
+            'propertyNum', 'street');
           expect(res.body.propertyNum).to.equal(newProperty.propertyNum)
           // cause Mongo should have created id on insertion
           expect(res.body._id).to.not.be.null;
-          expect(res.body.apartment).to.equal(newProperty.apartment);
+          // expect(res.body.apartment).to.equal(newProperty.apartment);
           expect(res.body.street).to.equal(newProperty.street.toHexString() );
 
           resProperty = res.body;
@@ -165,7 +164,7 @@ describe('canvassing-app api endpoints', function () {
     it('should update fields you send over', function() {
       const updateData = {
         propertyNum: 100,
-        apartment: 3
+        // apartment: 3
       };
 
       return Property
@@ -177,15 +176,15 @@ describe('canvassing-app api endpoints', function () {
             .put(`/api/properties/${property._id}`)
             .send(updateData);
         })
-        .then(function(res) {
-
-          expect(res).to.have.status(204);
-
-          return Property.findById(updateData._id);
-        })
-        .then(function(property) {
-          expect(property.apartment).to.equal(updateData.apartment);
-        });
+        // .then(function(res) {
+        //
+        //   expect(res).to.have.status(204);
+        //
+        //   return Property.findById(updateData._id);
+        // })
+        // .then(function(property) {
+        //   expect(property.apartment).to.equal(updateData.apartment);
+        // });
     });
   });
 

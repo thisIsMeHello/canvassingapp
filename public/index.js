@@ -117,12 +117,12 @@ function renderStreetList(data) {
     return `
       <div class="section-container">
         <div class="street-edit-delete">
-          <p class="street-details"><span class="listStreetName">${street.streetName}</span> <span class="listStreetFrom">${street.numRangeStart}</span> to <span class="listStreetTo">${street.numRangeEnd}</span></p>
+          <p class="street-details"><span class="listStreetName">${street.streetName}</span class="listStreetFrom">${street.numRangeStart}</span> to <span class="listStreetTo">${street.numRangeEnd}</span></p>
           <div data-id="${street._id}" class="js-street-buttons">
-            <button data-id="${street._id}" class="js-edit-button>edit</button>
+            <button data-id="${street._id}" class="js-edit-button">edit</button>
             <button data-id="${street._id}" class="js-delete-button">delete</button>
             <button data-id="${street._id}" class="js-survey-button">survey</button>
-          <div>
+          </div>
         </div>
       </div>
     `
