@@ -52,23 +52,23 @@ function validate(user, pass) {
   }
 }
 
-function splashLoginLink(){
-  $(document).on("click", ".js-splash-login-link", function(event) {
-    event.preventDefault();
-    console.log("splash login link clicked");
-    $(document).find(".js-login-section").removeClass("hidden");
-    $(document).find(".js-splash-section").addClass("hidden");
-  })
-}
-
-function loginHomeLink(){
-  $(document).on("click", ".js-login-page-home-link", function(event) {
-    event.preventDefault();
-    console.log("login home link clicked");
-    $(document).find(".js-splash-section").removeClass("hidden");
-    $(document).find(".js-login-section").addClass("hidden");
-  })
-}
+// function splashLoginLink(){
+//   $(document).on("click", ".js-splash-login-link", function(event) {
+//     event.preventDefault();
+//     console.log("splash login link clicked");
+//     $(document).find(".js-login-section").removeClass("hidden");
+//     $(document).find(".js-splash-section").addClass("hidden");
+//   })
+// }
+//
+// function loginHomeLink(){
+//   $(document).on("click", ".js-login-page-home-link", function(event) {
+//     event.preventDefault();
+//     console.log("login home link clicked");
+//     $(document).find(".js-splash-section").removeClass("hidden");
+//     $(document).find(".js-login-section").addClass("hidden");
+//   })
+// }
 
 $(".js-login-page-submit-button").on("click", event => {
   console.log("login button clicked");
@@ -77,8 +77,13 @@ $(".js-login-page-submit-button").on("click", event => {
   let inputPassword = $(".js-login-password").val();
 
   if (validate(inputUsername, inputPassword)) {
-    $(document).find(".js-street-section").removeClass("hidden");
+    // db.Street.remove({});
+    // db.Property.remove({});
+    // db.Resident.remove({});
     $(".js-login-section").addClass("hidden");
+    $(document).find(".js-splash-section, .js-splashImg").addClass("hidden");
+    $(document).find(".js-street-section").removeClass("hidden");
+    // $(document).find(".js-nav").removeClass("hidden");
   } else {
     $(document).find("p.js-login-msg").html(`<p>Login details incorrect</p>`);
     $(document).find(".js-login-userName").val("");
@@ -90,7 +95,7 @@ $(".js-login-page-submit-button").on("click", event => {
 $(".js-add-street-button").on("click", event => {
   console.log("add street button clicked");
   $(document).find(".js-add-street-form").removeClass("hidden");
-
+  $(document).find(".js-street-list").addClass("hidden");
 })
 
 $(".js-cancel-add-street-button").on("click", event => {
@@ -99,6 +104,7 @@ $(".js-cancel-add-street-button").on("click", event => {
   $(document).find(".js-houseNumberLow").val("");
   $(document).find(".js-houseNumberHigh").val("");
   $(document).find(".js-add-street-form").addClass("hidden");
+  $(document).find(".js-street-list").removeClass("hidden");
 })
 
 function streetHomeLink(){
@@ -106,6 +112,7 @@ function streetHomeLink(){
     event.preventDefault();
     console.log("street page home link clicked");
     $(document).find(".js-splash-section").removeClass("hidden");
+    $(document).find(".js-splashImg").removeClass("hidden");
     $(document).find(".js-street-section").addClass("hidden");
   })
 }
@@ -117,7 +124,7 @@ function renderStreetList(data) {
     return `
       <div class="section-container">
         <div class="street-edit-delete">
-          <p class="street-details"><span class="listStreetName">${street.streetName}</span class="listStreetFrom">${street.numRangeStart}</span> to <span class="listStreetTo">${street.numRangeEnd}</span></p>
+          <p class="street-details"><span class="listStreetName">${street.streetName} </span class="listStreetFrom">${street.numRangeStart}</span> to <span class="listStreetTo">${street.numRangeEnd}</span></p>
           <div data-id="${street._id}" class="js-street-buttons">
             <button data-id="${street._id}" class="js-edit-button">edit</button>
             <button data-id="${street._id}" class="js-delete-button">delete</button>
@@ -166,6 +173,7 @@ function  addStreetToList() {
     }
 
     $(".js-add-street-form").addClass("hidden");
+    $(document).find(".js-street-list").removeClass("hidden");
     $('.js-street').val("");
     $('.js-houseNumberLow').val("");
     $('.js-houseNumberHigh').val("");
@@ -207,10 +215,11 @@ function renderEditForm(data) {
 
 function streetEditButton() {
   $(document).on("click", ".js-edit-button", (event) => {
-    let id = $(event.target).data("id")
+    let id = $(event.target).data("id");
     getStreetById(id, function(editStreet){
       let renderFormHTML = renderEditForm(editStreet);
       $(event.target).closest(".js-street-buttons").addClass("hidden");
+      // $(document).find(".js-street-list").addClass("hidden");
       $(event.target).parent().after(renderFormHTML);
     })
   });
@@ -285,7 +294,7 @@ function streetSurveyButton() {
     let id = STORE.streetID;
 
     getStreetById(id, (data) => {
-      $(document).find(".js-property-section h2").html(`${data.street.streetName} ${data.street.numRangeStart} to ${data.street.numRangeEnd}`);
+      $(document).find(".js-property-section p").html(`${data.street.streetName} ${data.street.numRangeStart} to ${data.street.numRangeEnd}`);
     })
 
     $(document).find(".js-property-section").removeClass("hidden");
@@ -332,7 +341,7 @@ function renderPropertyList(data) {
     return `
       <div class="section-container">
         <div class="property-edit-delete">
-          <h2>${property.propertyNum}</h2>
+          <p>${property.propertyNum}</p>
           <div data-id="${property._id}" class="js-property-buttons">
             <button data-id="${property._id}" class="js-property-delete-button">delete</button>
             <button data-id="${property._id}" class="js-propertySurvey-button">survey</button>
@@ -390,6 +399,7 @@ function addPropertyToList() {
     $(document).find(".property-input").addClass("hidden");
     $(document).find(".js-survey-expose-property-input-button").removeClass("hidden");
     $(document).find(".js-survey-cancel-property-input-button").removeClass("hidden");
+    $('.js-property-survey-number').val("");
   })
 }
 
@@ -458,8 +468,8 @@ function renderResidentList(data) {
     return `
       <div class="section-container">
         <div class="resident-edit-delete">
-          <h2>${resident.firstName} ${resident.surname}</h2>
-          <h3>${resident.votingIntention}</h3>
+          <p>${resident.firstName} ${resident.surname}</p>
+          <p>${resident.votingIntention}</p>
           <div data-id="${resident._id}" class="js-resident-buttons">
             <button data-id="${resident._id}" class="js-resident-delete-button">delete</button>
           <div>
@@ -573,8 +583,8 @@ function residentEditButton() {
 }
 
 function setUpApp() {
-  splashLoginLink();
-  loginHomeLink()
+  // splashLoginLink();
+  // loginHomeLink()
   getStreetsAndRender();
   addStreetToList();
   streetHomeLink()

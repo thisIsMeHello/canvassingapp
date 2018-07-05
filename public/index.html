@@ -4,134 +4,123 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Canvassing App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
   <link rel="stylesheet" href="index.css">
+  <link href="https://fonts.googleapis.com/css?family=Patua+One|Roboto|Roboto+Condensed" rel="stylesheet">
 </head>
 <body>
 
-  <section class="splash js-splash-section">
-    <h1>Find My Peoples</h1>
-    <p>This is a political canvassing app that simplifies data collection. Start by adding the streets you want to survey, then begin collecting information for each household</p>
-    <a class="js-splash-login-link">login</a>
-  </section>
+  <!-- <nav class="js-nav hidden">
+    <p>
+      <a class="nav" href="#streets">STREETS</a>
+      <a class="nav" href="#properties">PROPERTIES</a>
+      <a class="nav" href="#residents">RESIDENTS</a>
+      <a class="nav" href="#residents">LOGOUT</a>
+    </p>
+  </nav> -->
 
-  <section class="js-login-section hidden">
-    <h1>Login</h1>
-    <form role="form" action="#" method="post" class="js-login">
-      <label for="loginUserName">Username</label>
-      <input class="input js-login-userName" id="loginUserName" name="loginUserName" type="text" value="test" required>
-      <label for="loginPassword">Password</label>
-      <input class="input js-login-password" id="loginPassword" name="loginPassword" type="text" value="password" required>
-      <p style="display: none; color: red" class="login-error">Username and Password not found</p>
-      <button class="button js-login-page-submit-button" type="submit">submit</button>
-      <p class="js-login-msg"></p>
-      <p>for testing use username = "test" and password = "password"</p>
-      <a class="js-login-page-home-link">home</a>
-    </form>
-  </section>
+  <div class="js-splashImg" id="background">
+    <div class="js-splashImg" id="overlay">
+      <div>
+        <section class="splash js-splash-section">
+          <!-- <img class="js-splash-image" src="../media/croppedCanvassing.png" alt="lower shot people walking"> -->
+          <h1>Find My Peoples</h1>
+          <h2>A political canvassing app that simplifies data collection</h2>
+          <p>Conduct door-to-door surveys and identify where your supporters live</p>
+          <p>Simply log in, enter a street and property number, then begin surveying the residents</p>
+          <!-- <a class="js-splash-login-link">login</a> -->
+        </section>
 
-  <section class="js-street-section hidden">
-    <h1>Street List</h1>
-    <button class="button js-add-street-button" type="submit">add street</button>
-    <a class="js-street-section-home-link">home</a>
+        <section class="js-login-section">
+          <!-- <h1>Login</h1> -->
+          <form role="form" action="#" method="post" class="js-login">
+            <!-- <label for="loginUserName">Username</label> -->
+            <input class="input js-login-userName" id="loginUserName" name="loginUserName" type="text" value="test" required>
+            <!-- <label for="loginPassword">Password</label> -->
+            <input class="input js-login-password" id="loginPassword" name="loginPassword" type="text" value="password" required>
+            <p style="display: none; color: red" class="login-error">Username and Password not found</p>
+            <button class=" submit button js-login-page-submit-button" type="submit">submit</button>
+            <p class="js-login-msg"></p>
+            <p>for testing <br> username = "test"<br>password = "password"</p>
+            <!-- <a class="js-login-page-home-link">home</a> -->
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
 
-    <div class="js-add-street-form hidden">
-      <form role="form" action="#" method="post" class="js-street-input-form">
-        <label for="street">Enter Street</label>
-        <input class="input js-street" value="Oxford Street" id="street" name="street" type="text" placeholder="eg. Oxford Street..." required>
-        <label for="houseNumberRange">Enter property number range</label>
-        <input class="input js-houseNumberLow" value=1 id="houseNumberRange" name="houseNumberRange" type="number" placeholder="0" required>
-        <label for="houseNumberRange">to</label>
-        <input class="input js-houseNumberHigh" value=100 id="houseNumberRange" name="houseNumberRange" type="number" placeholder="100" required>
-        <p style="display: none; color: red" class="login-error">Please enter a number</p>
-        <button class="button js-add-street-to-list-button" type="submit">Add to list</button>
-        <button class="button js-cancel-add-street-button" type="submit">cancel</button>
+  <div id="page">
+    <section id="streets" class="page js-street-section hidden">
+        <h1>Street List</h1>
+        <p>Add streets to survey</p>
+        <button class="button js-add-street-button" type="submit">add street</button>
+        <a class="js-street-section-home-link">logout</a>
+
+        <div class="js-add-street-form hidden">
+          <form role="form" action="#" method="post" class="js-street-input-form">
+            <label for="street">Enter Street</label>
+            <input class="input js-street" id="street" name="street" type="text" placeholder="Enter street" required>
+            <label for="houseNumberRange">Enter property number range</label>
+            <input class="input js-houseNumberLow" id="houseNumberRange" name="houseNumberRange" type="number" placeholder="from" required>
+            <label for="houseNumberRange">to</label>
+            <input class="input js-houseNumberHigh" id="houseNumberRange" name="houseNumberRange" type="number" placeholder="to" required>
+            <p style="display: none; color: red" class="login-error">Please enter a number</p>
+            <button class="button js-add-street-to-list-button" type="submit">Add to list</button>
+            <button class="button js-cancel-add-street-button" type="submit">cancel</button>
+          </form>
+        </div>
+
+        <div>
+          <div class="js-street-list"></div>
+        </div>
+
+    </section>
+
+
+    <section id="properties" class="page js-property-section hidden">
+      <h1>Street Survey</h1>
+      <p></p>
+      <h3></h3>
+
+      <form class="propertyNumberForm">
+
+        <div class="property-input hidden">
+          <label for="PropertySurveyNumber">Add property number</label>
+          <input class="input js-property-survey-number" id="PropertySurveyNumber" name="PropertySurveyNumber" type="number">
+          <button class="button js-survey-add-button" type="submit">add</button>
+          <button class="button js-survey-cancel-add-button" type="submit">cancel</button>
+        </div>
+
+        <div class="js-property-input-buttons">
+          <button class="button js-survey-expose-property-input-button" type="submit">add property</button>
+          <button class="button js-survey-cancel-property-input-button" type="submit">back</button>
+        </div>
+
       </form>
-    </div>
 
-    <div>
-      <div class="js-street-list"></div>
-    </div>
-  </section>
+  <!-- this is where the property number list is rendered to -->
+      <div class="page js-property-number-list"></div>
 
-  <section class="js-property-section hidden">
-    <h1>Street Survey</h1>
-    <h2></h2>
-    <h3></h3>
-
-    <form class="propertyNumberForm">
-
-      <div class="property-input hidden">
-        <label for="PropertySurveyNumber">Add property</label>
-        <input class="input js-property-survey-number" id="PropertySurveyNumber" name="PropertySurveyNumber" type="number">
-        <button class="button js-survey-add-button" type="submit">add</button>
-        <button class="button js-survey-cancel-add-button" type="submit">cancel</button>
+      <div id="residents" class="js-occupant-input-buttons hidden">
+        <button class="button js-survey-expose-occupant-input-button" type="submit">add occupant</button>
+        <button class="button js-survey-cancel-occupant-input-button" type="submit">back</button>
       </div>
 
-      <div class="js-property-input-buttons">
-        <button class="button js-survey-expose-property-input-button" type="submit">add property</button>
-        <button class="button js-survey-cancel-property-input-button" type="submit">back</button>
-      </div>
+      <form role="form" action="#" method="post" class="js-resident-survey-form hidden">
+        <label for="survey-first-name">First Name</label>
+        <input class="survey-first-name" class="js-firstName" type="text" value="Marcus">
+        <label for="survey-surname">Surname</label>
+        <input class="survey-surname" class="js-surname" type="text" value="Richmond">
+        <label for="survey-voting-intention">Voting Intention</label>
+        <input class="survey-voting-intention" class="js-voting-intention" type="text" value="Labour">
+        <button class="js-save-resident">Save</button>
+        <button class="js-cancel-save-resident">Cancel</button>
+      </form>
 
-    </form>
-
-<!-- this is where the property number list is rendered to -->
-    <div class="js-property-number-list"></div>
-
-    <div class="js-occupant-input-buttons hidden">
-      <button class="button js-survey-expose-occupant-input-button" type="submit">add occupant</button>
-      <button class="button js-survey-cancel-occupant-input-button" type="submit">back</button>
-    </div>
-
-    <form role="form" action="#" method="post" class="js-resident-survey-form hidden">
-      <label for="survey-first-name">First Name</label>
-      <input class="survey-first-name" class="js-firstName" type="text" value="Marcus">
-      <label for="survey-surname">Surname</label>
-      <input class="survey-surname" class="js-surname" type="text" value="Richmond">
-      <label for="survey-voting-intention">Voting Intention</label>
-      <input class="survey-voting-intention" class="js-voting-intention" type="text" value="Labour">
-      <button class="js-save-resident">Save</button>
-      <button class="js-cancel-save-resident">Cancel</button>
-    </form>
-
-    <div class="js-occupant-list"></div>
-
-  <!-- </section>
-
-  <section class="js-occupant-section">
-    <h1>Occupant Survey</h1>
-    <h2></h2>
-    <h3></h3>
-    <form class="occupantForm">
-      <div class="occupant-input">
-        <label for="OccupantSurveyNumber">Add property</label>
-        <input class="input js-property-survey-number" id="PropertySurveyNumber" name="PropertySurveyNumber" type="number">
-        <button class="button js-survey-add-button" type="submit">add</button>
-        <button class="button js-survey-cancel-add-button" type="submit">cancel</button>
-      </div>
-
-      <button class="button js-survey-expose-property-input-button" type="submit">add property</button>
-      <button class="button js-survey-cancel-property-input-button" type="submit">cancel</button>
-
-    </form>
-
-    <div class="js-property-number-list"></div>
-
-    <form role="form" action="#" method="post" class="js-survey-form hidden">
-      <label for="survey-first-name">First Name</label>
-      <input id="survey-first-name" class="js-firstName" type="text" value="Marcus">
-      <label for="survey-surname">Surname</label>
-      <input id="survey-surname" class="js-surname" type="text" value="Richmond">
-      <label for="survey-voting-intention">Voting Intention</label>
-      <input id="survey-voting-intention" class="js-voting-intention" type="text" value="Labour">
-      <button class="js-save-survey">Save</button>
-      <button class="js-cancel-survey">Cancel</button>
-    </form>
-
-    <ul id="residentList"></ul>
-
-  </section> -->
+      <div class="js-occupant-list"></div>
+    </section>
+  </div>
 
   <script
       src="https://code.jquery.com/jquery-3.2.1.min.js"
