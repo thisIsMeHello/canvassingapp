@@ -1,42 +1,11 @@
 * {
   box-sizing: border-box;
-  animation: fadein 0.4s;
-    -moz-animation: fadein 0.4s; /* Firefox */
-    -webkit-animation: fadein 0.4s; /* Safari and Chrome */
-    -o-animation: fadein 0.4s; /* Opera */
+  animation: fadein 0.3s;
+    -moz-animation: fadein 0.3s; /* Firefox */
+    -webkit-animation: fadein 0.3s; /* Safari and Chrome */
+    -o-animation: fadein 0.3s; /* Opera */
 }
-@keyframes fadein {
-    from {
-        opacity:0;
-    }
-    to {
-        opacity:1;
-    }
-}
-@-moz-keyframes fadein { /* Firefox */
-    from {
-        opacity:0;
-    }
-    to {
-        opacity:1;
-    }
-}
-@-webkit-keyframes fadein { /* Safari and Chrome */
-    from {
-        opacity:0;
-    }
-    to {
-        opacity:1;
-    }
-}
-@-o-keyframes fadein { /* Opera */
-    from {
-        opacity:0;
-    }
-    to {
-        opacity: 1;
-    }
-}
+
 
 .hidden {
   display: none;
@@ -46,7 +15,7 @@ font-family: 'Roboto', sans-serif;
 font-family: 'Roboto Condensed', sans-serif;
 font-family: 'Patua One', cursive;
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, {
   font-family: 'Patua One';
 }
 
@@ -76,6 +45,7 @@ body {
 #background {
   height: 100vh;
   background: url(media/local_camp_hdr.jpg) no-repeat center center fixed;
+  /* background: url(media/mummy.jpeg) no-repeat center center fixed; */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -87,15 +57,32 @@ body {
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.8);
-  /* background: linear-gradient(253deg,#ec0000,#fad961);
-  opacity: .8;
-  mix-blend-mode: multiply; */
+  /* background: linear-gradient(253deg,#ec0000,#fad961); */
+  /* opacity: .8; */
+  mix-blend-mode: multiply;
   height: 100%;
   width: 100%;
 }
 
-#overlay > div {
+/* #overlay > div {
   max-width: 300px
+} */
+
+.splash-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.splash-container h1, .splash-container h2, .splash-container p {
+  color: white;
+
+}
+
+
+.splash-container > section {
+  width: 300px;
+  padding: 10px;
 }
 
 :any-link {
