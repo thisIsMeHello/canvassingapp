@@ -77,10 +77,6 @@ $(".js-login-page-submit-button").on("click", event => {
   let inputPassword = $(".js-login-password").val();
 
   if (validate(inputUsername, inputPassword)) {
-    // db.Street.remove({});
-    // db.Property.remove({});
-    // db.Resident.remove({});
-    $(".js-login-section").addClass("hidden");
     $(document).find(".js-splash-section, .js-splashImg").addClass("hidden");
     $(document).find(".js-street-section").removeClass("hidden");
     // $(document).find(".js-nav").removeClass("hidden");
@@ -108,12 +104,13 @@ $(".js-cancel-add-street-button").on("click", event => {
 })
 
 function streetHomeLink(){
-  $(document).on("click", ".js-street-section-home-link", function(event) {
+  $(document).on("click", ".js-street-section-logout-link", function(event) {
     event.preventDefault();
     console.log("street page home link clicked");
     $(document).find(".js-splash-section").removeClass("hidden");
     $(document).find(".js-splashImg").removeClass("hidden");
     $(document).find(".js-street-section").addClass("hidden");
+    $(document).find(".propertiesTitle").text("Property List");
   })
 }
 
@@ -299,7 +296,7 @@ function streetSurveyButton() {
 
     $(document).find(".js-property-section").removeClass("hidden");
     $(document).find(".js-street-section").addClass("hidden");
-
+    // $(document).find(".nav-links").html("<button class='.js-street-section-logout-link'>logout</button><button class='.js-street-section-logout-link'>Street</button>");
     getPropertiesAndRender();
   })
 }
@@ -325,12 +322,13 @@ function cancelExposePropertyInputButton() {
   })
 }
 
-function cancelSurveyStreetButton() {
-  $(document).on("click", ".js-survey-cancel-property-input-button", (event) => {
+function propertyListStreetLink() {
+  $(document).on("click", ".js-property-section-street-link", (event) => {
     console.log("js-survey-cancel-property-input-button clicked");
     event.preventDefault();
     $(document).find(".js-property-section").addClass("hidden");
     $(document).find(".js-street-section").removeClass("hidden");
+    $(document).find(".propertiesTitle").text("Property List");
   })
 }
 
@@ -419,6 +417,14 @@ function propertySurveyButton() {
   $(document).find(".js-property-number-list").addClass("hidden");
   $(document).find(".js-property-input-buttons").addClass("hidden");
   $(document).find(".js-occupant-input-buttons").removeClass("hidden");
+  $(document).find(".propertiesTitle").text("Occupant List");
+  let OccupantNavHTML = `
+  <a class="js-street-section-logout-link">logout</a> &gt;
+  <a class="js-property-section-street-link">streets</a> &gt;
+  <a class="js-property-section-property-link">properties</a> &gt;
+  occupants
+  `
+  $(document).find(".js-nav-links").html(OccupantNavHTML);
   getResidentsAndRender();
   })
 }
@@ -541,7 +547,7 @@ function addResidentToList() {
 }
 
 function backToPropertyList() {
-  $(document).on("click", ".js-survey-cancel-occupant-input-button", (event) => {
+  $(document).on("click", ".js-property-section-property-link", (event) => {
     event.preventDefault();
     console.log("back to property list button clicked");
 
@@ -549,6 +555,12 @@ function backToPropertyList() {
     $(document).find(".js-property-input-buttons").removeClass("hidden");
     $(document).find(".js-occupant-input-buttons").addClass("hidden");
     $('.js-occupant-list').html("");
+    let PropertyNavHTML = `
+    <a class="js-street-section-logout-link">logout</a> &gt;
+    <a class="js-property-section-street-link">street list</a> &gt; property list
+    `
+    $(document).find(".js-nav-links").html(PropertyNavHTML);
+    $(document).find(".propertiesTitle").text("Property List");
   // getResidentsAndRender();
   })
 }
@@ -584,10 +596,10 @@ function residentEditButton() {
 
 function setUpApp() {
   // splashLoginLink();
-  // loginHomeLink()
+
   getStreetsAndRender();
   addStreetToList();
-  streetHomeLink()
+  streetHomeLink();
   streetEditButton();
   streetDeleteButton();
   streetEditCancelButton();
@@ -595,7 +607,7 @@ function setUpApp() {
   streetSurveyButton();
   exposePropertyInputButton();
   cancelExposePropertyInputButton();
-  cancelSurveyStreetButton();
+  propertyListStreetLink();
   addPropertyToList();
   propertySurveyButton();
   propertyDeleteButton();

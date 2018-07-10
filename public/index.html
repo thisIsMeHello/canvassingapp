@@ -11,19 +11,10 @@
 </head>
 <body>
 
-  <!-- <nav class="js-nav hidden">
-    <p>
-      <a class="nav" href="#streets">STREETS</a>
-      <a class="nav" href="#properties">PROPERTIES</a>
-      <a class="nav" href="#residents">RESIDENTS</a>
-      <a class="nav" href="#residents">LOGOUT</a>
-    </p>
-  </nav> -->
-
   <div class="js-splashImg" id="background">
-    <div class="js-splashImg" id="overlay">
+    <div class="js-splashImg splash-container" id="overlay">
 
-      <div class="splash-container">
+      <div class="splash-element-container">
 
         <section class="splash js-splash-section">
           <h1>Find My Peoples</h1>
@@ -32,7 +23,7 @@
 
         <section>
           <p>Conduct door-to-door surveys and identify where your supporters live</p>
-          <p>Simply log in, enter a street and property number, then begin surveying the residents</p>
+          <p>Log in, enter a street and property number, then begin surveying the residents</p>
         </section>
 
         <section class="js-login-section">
@@ -51,15 +42,20 @@
         </section>
 
       </div>
+
     </div>
   </div>
 
   <div id="page">
     <section id="streets" class="page js-street-section hidden">
         <h1>Street List</h1>
+        <nav class="nav-links">
+          <a class="js-street-section-logout-link">logout</a> &gt; streets
+          <!-- <p class="js-street-section-logout-link">street list</a> -->
+        </nav>
         <p>Add streets to survey</p>
         <button class="button js-add-street-button" type="submit">add street</button>
-        <a class="js-street-section-home-link">logout</a>
+
 
         <div class="js-add-street-form hidden">
           <form role="form" action="#" method="post" class="js-street-input-form">
@@ -83,9 +79,13 @@
 
 
     <section id="properties" class="page js-property-section hidden">
-      <h1>Street Survey</h1>
-      <p></p>
-      <h3></h3>
+      <h1 class="propertiesTitle">Property List</h1>
+      <nav class="nav-links js-nav-links">
+        <a class="js-street-section-logout-link">logout</a> &gt;
+        <a class="js-property-section-street-link">streets</a> &gt; properties
+      </nav>
+      <!-- <p></p>
+      <h3></h3> -->
 
       <form class="propertyNumberForm">
 
@@ -98,7 +98,7 @@
 
         <div class="js-property-input-buttons">
           <button class="button js-survey-expose-property-input-button" type="submit">add property</button>
-          <button class="button js-survey-cancel-property-input-button" type="submit">back</button>
+          <!-- <button class="button js-survey-cancel-property-input-button" type="submit">back</button> -->
         </div>
 
       </form>
@@ -108,7 +108,7 @@
 
       <div id="residents" class="js-occupant-input-buttons hidden">
         <button class="button js-survey-expose-occupant-input-button" type="submit">add occupant</button>
-        <button class="button js-survey-cancel-occupant-input-button" type="submit">back</button>
+        <!-- <button class="button js-survey-cancel-occupant-input-button" type="submit">back</button> -->
       </div>
 
       <form role="form" action="#" method="post" class="js-resident-survey-form hidden">
