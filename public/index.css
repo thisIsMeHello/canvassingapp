@@ -144,7 +144,8 @@ button, input {
 } */
 
 #page {
-  padding: 5px;
+  padding: 10px;
+
 }
 
 .js-street-input-form {
@@ -158,8 +159,8 @@ nav {
 a {
   color: white;
   position: relative;
-  text-decoration: none;
-  text-transform: uppercase;
+  text-decoration: underline;
+  /* text-transform: uppercase; */
 }
 
 a:hover {
@@ -170,4 +171,9 @@ a:hover {
 
 a:active {
   top: 5px;
+}
+
+#streets, #properties {
+  max-width: 350px;
+  margin: 0 auto;
 }
