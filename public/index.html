@@ -27,17 +27,13 @@
         </section>
 
         <section class="js-login-section">
-          <!-- <h1>Login</h1> -->
           <form role="form" action="#" method="post" class="js-login">
-            <!-- <label for="loginUserName">Username</label> -->
-            <input class="input js-login-userName" id="loginUserName" name="loginUserName" type="text" value="test" required>
-            <!-- <label for="loginPassword">Password</label> -->
-            <input class="input js-login-password" id="loginPassword" name="loginPassword" type="text" value="password" required>
+            <input class="input js-login-userName" id="loginUserName" name="loginUserName" type="text" required>
+            <input class="input js-login-password" id="loginPassword" name="loginPassword" type="text" required>
             <p style="display: none; color: red" class="login-error">Username and Password not found</p>
             <button class=" submit button js-login-page-submit-button" type="submit">submit</button>
             <p class="js-login-msg"></p>
             <p>for testing <br> username = "test"<br>password = "password"</p>
-            <!-- <a class="js-login-page-home-link">home</a> -->
           </form>
         </section>
 
@@ -51,7 +47,6 @@
         <h1>Street List</h1>
         <nav class="nav-links">
           <a class="js-street-section-logout-link">logout</a> &gt; streets
-          <!-- <p class="js-street-section-logout-link">street list</a> -->
         </nav>
         <p>Add streets to survey</p>
         <button class="button js-add-street-button" type="submit">add street</button>
@@ -84,7 +79,6 @@
         <a class="js-street-section-logout-link">logout</a> &gt;
         <a class="js-property-section-street-link">streets</a> &gt; properties
       </nav>
-      <!-- <p></p> -->
       <h3></h3>
 
       <form class="propertyNumberForm">
@@ -98,7 +92,6 @@
 
         <div class="js-property-input-buttons">
           <button class="button js-survey-expose-property-input-button" type="submit">add property</button>
-          <!-- <button class="button js-survey-cancel-property-input-button" type="submit">back</button> -->
         </div>
 
       </form>
@@ -108,16 +101,15 @@
 
       <div id="residents" class="js-occupant-input-buttons hidden">
         <button class="button js-survey-expose-occupant-input-button" type="submit">add occupant</button>
-        <!-- <button class="button js-survey-cancel-occupant-input-button" type="submit">back</button> -->
       </div>
 
       <form role="form" action="#" method="post" class="js-resident-survey-form hidden">
         <label for="survey-first-name">First Name</label>
-        <input class="survey-first-name" class="js-firstName" type="text" value="Marcus">
+        <input class="survey-first-name" class="js-firstName" type="text">
         <label for="survey-surname">Surname</label>
-        <input class="survey-surname" class="js-surname" type="text" value="Richmond">
+        <input class="survey-surname" class="js-surname" type="text">
         <label for="survey-voting-intention">Voting Intention</label>
-        <input class="survey-voting-intention" class="js-voting-intention" type="text" value="Labour">
+        <input class="survey-voting-intention" class="js-voting-intention" type="text">
         <button class="js-save-resident">Save</button>
         <button class="js-cancel-save-resident">Cancel</button>
       </form>
