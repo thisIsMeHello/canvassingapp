@@ -1,3 +1,3 @@
 # canvassingapp
 
-![alt text](https://raw.githubusercontent.com/canvassingapp/public/media/canvassingAppSplash.png)
+![alt text](https://github.com/thisIsMeHello/canvassingapp/blob/master/public/media/canvassingAppSplash.png)
