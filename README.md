@@ -1,3 +1,3 @@
 # canvassingapp
 
-![alt text](https://raw.githubusercontent.com/thisIsMeHello/Quantum-Nights/master/README.md)
+![alt text](https://raw.githubusercontent.com/canvassingapp/public/media/canvassingAppSplash.png)
