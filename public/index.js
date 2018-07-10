@@ -561,6 +561,7 @@ function backToPropertyList() {
     `
     $(document).find(".js-nav-links").html(PropertyNavHTML);
     $(document).find(".propertiesTitle").text("Property List");
+    $(document).find(".js-property-section h3").html("");
   // getResidentsAndRender();
   })
 }
