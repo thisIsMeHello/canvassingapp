@@ -60,9 +60,8 @@ $(".js-login-page-submit-button").on("click", event => {
   if (validate(inputUsername, inputPassword)) {
     $(document).find(".js-splash-section, .js-splashImg").addClass("hidden");
     $(document).find(".js-street-section").removeClass("hidden");
-    // $(document).find(".js-nav").removeClass("hidden");
   } else {
-    $(document).find("p.js-login-msg").html(`<p>Login details incorrect</p>`);
+    $(document).find("p.js-login-msg").html(`<p style="color:red;">Login details incorrect</p>`);
     $(document).find(".js-login-userName").val("");
     $(document).find(".js-login-password").val("");
   }
