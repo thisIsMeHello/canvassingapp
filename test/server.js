@@ -4,9 +4,6 @@ const { app }  = require("../server");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 
-// Clear the console before each run
-// process.stdout.write("\x1Bc\n");
-
 const expect = chai.expect;
 
 chai.use(chaiHttp);

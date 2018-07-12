@@ -27,7 +27,6 @@ function generateResidentData() {
   return {
     "firstName": "Dave",
     "surname": "Biggles",
-    // "street": { type: mongoose.Schema.Types.ObjectId, ref: 'Street' },
     "votingIntention": "Labour",
     "property": mongoose.Types.ObjectId(5)
   }
@@ -47,7 +46,6 @@ function generatePropertyData(i) {
     "_id": mongoose.Types.ObjectId(i),
     "propertyNum": 77,
     "apartment": 3,
-    // "street": { type: mongoose.Schema.Types.ObjectId, ref: 'Street' },
     "street": mongoose.Types.ObjectId(5)
   }
 }
@@ -115,8 +113,6 @@ describe('canvassing-app api endpoints', function () {
   });
 
   it('should return residents with right fields', function() {
-      // Strategy: Get back all restaurants, and ensure they have expected keys
-
       let resResident;
       return chai.request(app)
         .get('/api/residents')
@@ -138,16 +134,10 @@ describe('canvassing-app api endpoints', function () {
           expect(resResident.firstName).to.equal(resident.firstName);
           expect(resResident.surname).to.equal(resident.surname);
           expect(resResident.votingIntention).to.equal(resident.votingIntention);
-          //expect(resProperty.street).to.equal(property.street);
-          //expect(resProperty.created).to.equal(post.created);
         });
   });
 
   describe('POST endpoint', function() {
-    // strategy: make a POST request with data,
-    // then prove that the restaurant we get back has
-    // right keys, and that `id` is there (which means
-    // the data was inserted into db)
     it('should add a new resident', function() {
 
       let resResident;
@@ -164,7 +154,6 @@ describe('canvassing-app api endpoints', function () {
           expect(res.body).to.include.keys(
             'firstName', 'surname', 'votingIntention');
           expect(res.body.firstName).to.equal(newResident.firstName)
-          // cause Mongo should have created id on insertion
           expect(res.body._id).to.not.be.null;
           expect(res.body.surname).to.equal(newResident.surname);
           expect(res.body.votingIntention).to.equal(newResident.votingIntention);
@@ -173,11 +162,7 @@ describe('canvassing-app api endpoints', function () {
           return Resident.findById(res.body._id);
         })
         .then(function(resident) {
-          // expect(resProperty._id).to.equal(property._id.toHexString());
           expect(resResident.firstName).to.equal(resident.firstName);
-
-          // expect(resProperty.apartment).to.equal(property.apartment);
-          // expect(resProperty.street).to.equal(property.street );
         });
     });
   });
@@ -212,11 +197,6 @@ describe('canvassing-app api endpoints', function () {
   });
 
   describe('DELETE endpoint', function() {
-    // strategy:
-    //  1. get a restaurant
-    //  2. make a DELETE request for that restaurant's id
-    //  3. assert that response has right status code
-    //  4. prove that restaurant with the id doesn't exist in db anymore
     it('delete a resident by id', function() {
 
       let resident;

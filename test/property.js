@@ -26,7 +26,7 @@ function generatePropertyData() {
   return {
     "propertyNum": 77,
     "apartment": 3,
-    // "street": { type: mongoose.Schema.Types.ObjectId, ref: 'Street' },
+    "street": { type: mongoose.Schema.Types.ObjectId, ref: 'Street' },
     "street": mongoose.Types.ObjectId(5)
   }
 }
@@ -44,7 +44,6 @@ function generateStreetData(i) {
   return {
     "_id": mongoose.Types.ObjectId(i),
     "streetName": "Marcus Street",
-    // "postCode": "SE22 8TH",
     "numRangeStart": 1,
     "numRangeEnd": 200,
   }
@@ -115,8 +114,6 @@ describe('canvassing-app api endpoints', function () {
         .then(function(property) {
           expect(resProperty.propertyNum).to.equal(property.propertyNum);
           expect(resProperty.apartment).to.equal(property.apartment);
-          //expect(resProperty.street).to.equal(property.street);
-          //expect(resProperty.created).to.equal(post.created);
         });
   });
 
@@ -143,18 +140,13 @@ describe('canvassing-app api endpoints', function () {
           expect(res.body.propertyNum).to.equal(newProperty.propertyNum)
           // cause Mongo should have created id on insertion
           expect(res.body._id).to.not.be.null;
-          // expect(res.body.apartment).to.equal(newProperty.apartment);
           expect(res.body.street).to.equal(newProperty.street.toHexString() );
 
           resProperty = res.body;
           return Property.findById(res.body._id);
         })
         .then(function(property) {
-          // expect(resProperty._id).to.equal(property._id.toHexString());
           expect(resProperty.propertyNum).to.equal(property.propertyNum);
-
-          // expect(resProperty.apartment).to.equal(property.apartment);
-          // expect(resProperty.street).to.equal(property.street );
         });
     });
   });
@@ -164,7 +156,6 @@ describe('canvassing-app api endpoints', function () {
     it('should update fields you send over', function() {
       const updateData = {
         propertyNum: 100,
-        // apartment: 3
       };
 
       return Property
@@ -176,15 +167,6 @@ describe('canvassing-app api endpoints', function () {
             .put(`/api/properties/${property._id}`)
             .send(updateData);
         })
-        // .then(function(res) {
-        //
-        //   expect(res).to.have.status(204);
-        //
-        //   return Property.findById(updateData._id);
-        // })
-        // .then(function(property) {
-        //   expect(property.apartment).to.equal(updateData.apartment);
-        // });
     });
   });
 

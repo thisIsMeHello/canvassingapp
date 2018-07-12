@@ -90,7 +90,6 @@ describe('canvassing-app api endpoints', function () {
             'streetName', 'numRangeStart', 'numRangeEnd');
           expect(_res.body.id).to.not.be.null;
           expect(_res.body.streetName).to.equal(newStreet.streetName);
-          // expect(_res.body.postCode).to.equal(newStreet.postCode);
           expect(_res.body.numRangeStart).to.equal(newStreet.numRangeStart);
           expect(_res.body.numRangeEnd).to.equal(newStreet.numRangeEnd);
 
@@ -123,7 +122,6 @@ describe('canvassing-app api endpoints', function () {
         })
         .then(function(Street) {
           expect(Street.streetName).to.equal(updateData.streetName);
-          // expect(Street.postCode).to.equal(updateData.postCode);
         });
     });
   });
