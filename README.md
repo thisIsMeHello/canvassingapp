@@ -25,6 +25,3 @@ Made with
 - Mongoose
 
 Automated testing and deployment with Chai, Mocha, Travis and Heroku
-
-API Endpoints
--------------
